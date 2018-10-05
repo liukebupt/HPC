@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
   int n=atoi(argv[1]);
 
-  printf("Checking dgemm3 with n=%d.\n",n);
+  printf("Checking dgemm4 with n=%d.\n",n);
 
   double *a=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n*n);
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
         max_diff=cur_diff;
     }
 
-  printf("The maximum difference between dgemm0 and dgemm3 is %f.\n", max_diff);
+  printf("The maximum difference between dgemm0 and dgemm4 is %f.\n", max_diff);
 
   free(a);
   free(b);
