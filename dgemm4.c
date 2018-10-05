@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
       c[pc2+1]=c11;
       c[pc2+2]=c12;
       c[pc2+3]=c13;
-      pc1+=1;
+      pc1+=4;
     }
   }
 
