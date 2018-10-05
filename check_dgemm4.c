@@ -40,8 +40,8 @@ int main(int argc, char* argv[]) {
         c11 += a[(i+1)*n+k]*b[k*n+j+1];
       }
       c3[i*n+j]=c00;
-      c3[i*n+j+1]=c10;
-      c3[(i+1)*n+j]=c01;
+      c3[i*n+j+1]=c01;
+      c3[(i+1)*n+j]=c10;
       c3[(i+1)*n+j+1]=c11;
     }
   
