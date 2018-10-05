@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 
   int n=atoi(argv[1]);
 
-  printf("Testing dgemm3 with n=%d.\n",n);
+  printf("Testing dgemm4 with n=%d.\n",n);
 
   double *a=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n*n);
