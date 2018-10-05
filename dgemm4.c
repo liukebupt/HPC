@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
   //printf("RAND_MAX=%d, CLOCKS_PER_SEC=%d.\n",RAND_MAX,CLOCKS_PER_SEC);
 
-  register int n=atoi(argv[1]);
+  int n=atoi(argv[1]);
 
   printf("Testing dgemm3 with n=%d.\n",n);
 
@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
   double *b=(double *)malloc(sizeof(double)*n*n);
   double *c=(double *)calloc(sizeof(double),n*n);
 
-  register int i;
+  int i;
 
   for (i=0; i<n*n; i++) {
     a[i]=drand();
@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
   
   clock_t start=clock();
   
-  register int j,k;
+  int j,k;
 
   for (i=0;i<n;i+=2)
     for (j=0;j<n;j+=4) {
