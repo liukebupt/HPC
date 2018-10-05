@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
   
   register int j,k;
 
-  for (i=0;i<n;i+=2) {
+  for (i=0;i<n;i+=2)
     for (j=0;j<n;j+=4) {
       register int pc1=i*n+j, pc2=pc1+n;
       register double c00=0, c01=0, c02=0, c03=0, c10=0, c11=0, c12=0, c13=0;
