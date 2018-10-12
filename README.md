@@ -1,14 +1,14 @@
-##LAPACK
+## LAPACK
 Instruction for using LAPACK in c on linux
 
-###Installation
+### Installation
 * Download latest version from http://www.netlib.org/lapack/.
 * Uncompress tar file.
 * `$cd lapack-*/`
 * `$cmake ./`
-###Test
+### Test
 * Get test program from http://www.netlib.org/lapack/lapacke.html.
 * Compile with `gcc test_lapack.c -L lib/ -llapacke -llapack -lrefblas -lgfortran -lm -I include/ -o test_lapack` 
       
-###Documentation
+### Documentation
 * http://www.netlib.org/lapack/explore-html/index.html.
