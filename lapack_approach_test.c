@@ -3,27 +3,26 @@
 
 int main (int argc, const char * argv[]) {
   
-   double A[2][2] = {3,4,5,9};
-   double B[2][1] = {5,3};
+  double A[2][2] = {3,4,5,9};
+  double B[2][1] = {5,3};
    
-   lapack_int info,m,n,lda,ldb,nrhs;
-   int i,j;
+  lapack_int n=2,*ipiv;
+  
 
-   m = 2;
-   n = 2;
-   nrhs = 2;
-   lda = 2;
-   ldb = 2;
+  n = 2;
+  ipiv = (lapack_int *)malloc(n*sizeof(lapack_int));
 
-   dgetrf(LAPACK_ROW_MAJOR, m, n,	A, lda);
-
-   for(i=0;i<n;i++)
-   {
-      for(j=0;j<n;j++)
-      {
-         printf("%lf ",A[i][j]);
-      }
-      printf("\n");
-   }
-   return 0;
+  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, *A, n, ipiv);
+  
+  int i,j;
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+     {
+        printf("%lf ",A[i][j]);
+     }
+     printf("  %6i ", ipiv[i]);
+     printf("\n");
+  }
+  return 0;
 }
