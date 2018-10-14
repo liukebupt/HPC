@@ -11,7 +11,7 @@ int main (int argc, const char * argv[]) {
   pvt = (int *)malloc(sizeof(int)*n);
   tempv = (double *)malloc(sizeof(double)*n);
   
-  for (i=0;i<n-1;i++) {
+  for (i=0;i<n;i++) {
     pvt[i]=i;
   }
   
