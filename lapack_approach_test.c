@@ -30,28 +30,6 @@ int main (int argc, const char * argv[]) {
 
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, m, n, *A, lda, ipiv);
   
-  for(i=0;i<n;i++)
-  {
-     for(j=0;j<n;j++)
-     {
-        printf("%lf ",A[i][j]);
-     }
-     //printf("  %lf ", B[i][0]);
-     printf("\n");
-  }
-  
-  cblas_dtrsm(LAPACK_ROW_MAJOR, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, *A, n, *B, n);
-  
-  for(i=0;i<n;i++)
-  {
-     for(j=0;j<n;j++)
-     {
-        printf("%lf ",A[i][j]);
-     }
-     printf("  %lf ", B[i][0]);
-     printf("\n");
-  }
-  
   double *temp=malloc(sizeof(double));
   for (i=0;i<n;i++)
   {
@@ -63,6 +41,31 @@ int main (int argc, const char * argv[]) {
     }
   }
 
+  
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+     {
+        printf("%lf ",A[i][j]);
+     }
+     //printf("  %lf ", B[i][0]);
+     printf("\n");
+  }
+  
+  cblas_dtrsm(LAPACK_ROW_MAJOR, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, n, 1, *A, n, *B, n);
+  cblas_dtrsm(LAPACK_ROW_MAJOR, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, n, 1, *A, n, *B, n);
+  
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+     {
+        printf("%lf ",A[i][j]);
+     }
+     printf("  %lf ", B[i][0]);
+     printf("\n");
+  }
+  
+  
   for(i=0;i<n;i++)
   {
      printf("  %lf ", B[i][0]);
