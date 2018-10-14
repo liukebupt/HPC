@@ -30,6 +30,16 @@ int main (int argc, const char * argv[]) {
 
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, m, n, *A, lda, ipiv);
   
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+     {
+        printf("%lf ",A[i][j]);
+     }
+     //printf("  %lf ", B[i][0]);
+     printf("\n");
+  }
+  
   cblas_dtrsm(LAPACK_ROW_MAJOR, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, *A, n, *B, n);
   
   for(i=0;i<n;i++)
