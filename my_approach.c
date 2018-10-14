@@ -42,7 +42,6 @@ int main (int argc, const char * argv[]) {
         memcpy(tempv,A[i],sizeof(double)*n);
         memcpy(A[i],A[maxind],sizeof(double)*n);
         memcpy(A[maxind],tempv,sizeof(double)*n); 
-        printf("After:\n");  
       }
     }
     for (j=i+1;j<n;j++) {
