@@ -10,7 +10,7 @@ int main (int argc, const char * argv[]) {
 
   lapack_int info,m,n,lda,ldb,nrhs;
   lapack_int *ipiv;
-  int i,j;
+  int i,j,k;
 
   n = 2;
   ipiv = (lapack_int *)malloc(n*sizeof(lapack_int));
@@ -30,16 +30,16 @@ int main (int argc, const char * argv[]) {
       memcpy(A[i],A[ipiv[i]],n);
       memcpy(A[ipiv[i]],temp,n);
     }
-  }
-
-  for(i=0;i<n;i++)
-  {
-    for(j=0;j<n;j++)
+    for(k=0;k<n;k++)
     {
-      printf("%lf ",A[i][j]);
+      for(j=0;j<n;j++)
+      {
+        printf("%lf ",A[k][j]);
+      }
+      printf("  %lf ", B[k][0]);
+      printf("\n");
     }
-    printf("  %lf ", B[i][0]);
-    printf("\n");
+
   }
   
   cblas_dtrsm(LAPACK_ROW_MAJOR, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, *A, n, *B, n);
