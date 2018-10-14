@@ -42,13 +42,7 @@ int main (int argc, const char * argv[]) {
         memcpy(tempv,A[i],sizeof(double)*n);
         memcpy(A[i],A[maxind],sizeof(double)*n);
         memcpy(A[maxind],tempv,sizeof(double)*n); 
-        printf("After:\n");
-        for(i=0;i<n;i++)
-        {
-           for(j=0;j<n;j++)
-              printf("%lf ",A[i][j]);
-           printf("  %6d \n", pvt[i]);
-        }  
+        printf("After:\n");  
       }
     }
     for (j=i+1;j<n;j++) {
