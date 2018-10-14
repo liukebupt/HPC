@@ -34,10 +34,13 @@ int main (int argc, const char * argv[]) {
         memcpy(tempv,A[i],sizeof(double)*n);
         memcpy(A[i],A[maxind],sizeof(double)*n);
         memcpy(A[maxind],tempv,sizeof(double)*n); 
-        printf("pvt:\n");  
+        printf("After:\n");
         for(i=0;i<n;i++)
-           printf("  %6d ", pvt[i]);
-        printf("\n");  
+        {
+           for(j=0;j<n;j++)
+              printf("%lf ",A[i][j]);
+           printf("  %6d \n", pvt[i]);
+        }  
       }
     }
     for (j=i+1;j<n;j++) {
@@ -62,7 +65,7 @@ int main (int argc, const char * argv[]) {
     double sum=0;
     for (j=0;j<i-1;j++)
       sum+=y[j]*A[i][j];
-    y[i]=b[pvt(i)]-sum;
+    y[i]=b[pvt[i]]-sum;
   }
   printf("y:\n");
   for(i=0;i<n;i++)
