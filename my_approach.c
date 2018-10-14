@@ -28,12 +28,16 @@ int main (int argc, const char * argv[]) {
       return -1;
     } else {
       if (maxind!=i) {
-         temps=pvt[i];
-         pvt[i]=pvt[maxind];
-         pvt[maxind]=temps;
-         memcpy(tempv,A[i],sizeof(double)*n);
-         memcpy(A[i],A[maxind],sizeof(double)*n);
-         memcpy(A[maxind],tempv,sizeof(double)*n); 
+        temps=pvt[i];
+        pvt[i]=pvt[maxind];
+        pvt[maxind]=temps;
+        memcpy(tempv,A[i],sizeof(double)*n);
+        memcpy(A[i],A[maxind],sizeof(double)*n);
+        memcpy(A[maxind],tempv,sizeof(double)*n); 
+        printf("pvt:\n");  
+        for(i=0;i<n;i++)
+           printf("  %6d ", pvt[i]);
+        printf("\n");  
       }
     }
     for (j=i+1;j<n;j++) {
@@ -48,8 +52,7 @@ int main (int argc, const char * argv[]) {
   {
      for(j=0;j<n;j++)
         printf("%lf ",A[i][j]);
-     printf("  %6d ", pvt[i]);
-     printf("\n");
+     printf("  %6d \n", pvt[i]);
   }
   
   double y[2];
@@ -63,9 +66,7 @@ int main (int argc, const char * argv[]) {
   }
   printf("y:\n");
   for(i=0;i<n;i++)
-  {
-     printf("  %lf ", y[i]);
-     printf("\n");
-  }
+     printf("  %lf \n", y[i]);
+
   return 0;
 }
