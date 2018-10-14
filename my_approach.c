@@ -15,6 +15,14 @@ int main (int argc, const char * argv[]) {
     pvt[i]=i;
   }
   
+  printf("Before:\n");
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+        printf("%lf ",A[i][j]);
+     printf("  %6d \n", pvt[i]);
+  }  
+  
   for (i=0;i<n-1;i++) {
     int maxind=i, max=abs(A[i][i]);
     for (j=i+1;j<n;j++) {
