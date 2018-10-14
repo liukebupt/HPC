@@ -54,7 +54,7 @@ int main (int argc, const char * argv[]) {
     ipiv[i]--;
     if (ipiv[i]!=i) {
       memcpy(temp,&B[i],sizeof(double));
-      memcpy(&B[i],B[ipiv[i]],sizeof(double));
+      memcpy(&B[i],&B[ipiv[i]],sizeof(double));
       memcpy(&B[ipiv[i]],temp,sizeof(double));
     }
   }
