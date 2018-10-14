@@ -36,7 +36,7 @@ int main (int argc, const char * argv[]) {
   lda = m;
   ldb = 2;
 
-  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, m, n, *A, lda, ipiv);
+  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, m, n, A, lda, ipiv);
   
   printf("LU:\n");
   for(i=0;i<n;i++)
@@ -53,9 +53,9 @@ int main (int argc, const char * argv[]) {
   {
     ipiv[i]--;
     if (ipiv[i]!=i) {
-      memcpy(temp,B[i],sizeof(double));
-      memcpy(B[i],B[ipiv[i]],sizeof(double));
-      memcpy(B[ipiv[i]],temp,sizeof(double));
+      memcpy(temp,&B[i],sizeof(double));
+      memcpy(&B[i],B[ipiv[i]],sizeof(double));
+      memcpy(&B[ipiv[i]],temp,sizeof(double));
     }
   }
   
