@@ -24,9 +24,9 @@ int main (int argc, const char * argv[]) {
   A[6]=4;
   A[7]=3;
   A[8]=2;
-  B[0]=6;
-  B[1]=11;
-  B[2]=16;
+  b[0]=6;
+  b[1]=11;
+  b[2]=16;
   memcpy(A_bak,A,sizeof(double)*n*n);
   
   int temps, maxind;
