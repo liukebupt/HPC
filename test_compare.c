@@ -71,7 +71,7 @@ int main (int argc, const char * argv[]) {
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) 
       printf("%f ",A[i*n+j]);
-    printf("\n");
+    printf("%d \n",pvt[i]);
   }
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
