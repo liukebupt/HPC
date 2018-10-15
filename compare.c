@@ -18,7 +18,7 @@ int main (int argc, const char * argv[]) {
  
   bool test=false;
   if (argv[2]=="True")
-    bool test=true;
+    test=true;
 
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
