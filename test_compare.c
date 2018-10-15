@@ -80,6 +80,10 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
+  printf("My y:\n");
+  for (i=1;i<n;i++) 
+    printf("%f ",y[i]);
+  printf("\n");
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
@@ -113,6 +117,10 @@ int main (int argc, const char * argv[]) {
     }
   }
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
+  printf("LA y:\n");
+  for (i=1;i<n;i++) 
+    printf("%f ",b[i]);
+  printf("\n");
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
   printf("LA result:\n");
   for (i=1;i<n;i++) 
