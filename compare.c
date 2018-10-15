@@ -3,6 +3,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include <cblas.h>
+#include <string.h>
 
 #define drand() (double)rand()/RAND_MAX+1 //return a random double number between 1 and 2.
 
@@ -15,9 +16,9 @@ int main (int argc, const char * argv[]) {
   int n=atoi(argv[1]);
   printf("n=.\n",n);
  
-  bool test=False;
+  bool test=false;
   if (argv[2]=="True")
-    bool test=True;
+    bool test=true;
 
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
@@ -57,7 +58,7 @@ int main (int argc, const char * argv[]) {
         pvt[i]=pvt[maxind];
         pvt[maxind]=temps;
         memcpy(tempv,&A[i],sizeof(double)*n);
-        memcpy(&A[i],A[maxind],sizeof(double)*n);
+        memcpy(&A[i],&A[maxind],sizeof(double)*n);
         memcpy(&A[maxind],tempv,sizeof(double)*n); 
       }
     }
