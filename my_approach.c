@@ -4,9 +4,9 @@
 
 int main (int argc, const char * argv[]) {
 
-  double A[2][2] = {3,4,5,9}, b[] = {5,3}, *tempv;
-
   int i, j, k, n=2, *pvt, temps;
+  
+  double A[b][b] = {3,4,5,9}, b[b] = {5,3}, *tempv;  
   
   pvt = (int *)malloc(sizeof(int)*n);
   tempv = (double *)malloc(sizeof(double)*n);
@@ -59,11 +59,11 @@ int main (int argc, const char * argv[]) {
      printf("  %6d \n", pvt[i]);
   }
   
-  double y[2];
+  double y[n], sum;
   
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
-    double sum=0;
+    sum=0;
     for (j=0;j<i-1;j++)
       sum+=y[j]*A[i][j];
     y[i]=b[pvt[i]]-sum;
@@ -71,6 +71,19 @@ int main (int argc, const char * argv[]) {
   printf("y:\n");
   for(i=0;i<n;i++)
      printf("  %lf \n", y[i]);
-
+  
+  double x[n];
+  x[n-1]=y[n-1]/A[n-1][n-1];
+  for (i=n-1;i>0;--i) {
+    sum=0;
+    for (j=i+1;j<n;j++)
+      sum+=x[j]*A[i][j];
+    x[i]=(y[i]-sum)/A[i][i];
+  }
+  
+  printf("result:\n");
+  for(i=0;i<n;i++)
+     printf("  %lf \n", x[i]);
+  
   return 0;
 }
