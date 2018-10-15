@@ -81,7 +81,7 @@ int main (int argc, const char * argv[]) {
     y[i]=b[pvt[i]]-sum;
   }
   printf("My y:\n");
-  for (i=1;i<n;i++) 
+  for (i=0;i<n;i++) 
     printf("%f ",y[i]);
   printf("\n");
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
@@ -92,7 +92,7 @@ int main (int argc, const char * argv[]) {
     x[i]=(y[i]-sum)/A[i*n+i];
   }
   printf("My result:\n");
-  for (i=1;i<n;i++) 
+  for (i=0;i<n;i++) 
     printf("%f ",x[i]);
   printf("\n");
   printf("Cost %.2f seconds by my approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
@@ -118,12 +118,12 @@ int main (int argc, const char * argv[]) {
   }
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
   printf("LA y:\n");
-  for (i=1;i<n;i++) 
+  for (i=0;i<n;i++) 
     printf("%f ",b[i]);
   printf("\n");
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
   printf("LA result:\n");
-  for (i=1;i<n;i++) 
+  for (i=0;i<n;i++) 
     printf("%f ",b[i]);
   printf("\n");
   printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
