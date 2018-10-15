@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <lapacke.h>
 #include <time.h>
+#include <stdbool.h>
+#include <cblas.h>
+
 #define drand() (double)rand()/RAND_MAX+1 //return a random double number between 1 and 2.
 
 int main (int argc, const char * argv[]) {
@@ -18,7 +21,7 @@ int main (int argc, const char * argv[]) {
 
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
-  int i, j;
+  int i, j, k;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) {
       A[i*n+j]=drand();
@@ -53,9 +56,9 @@ int main (int argc, const char * argv[]) {
         temps=pvt[i];
         pvt[i]=pvt[maxind];
         pvt[maxind]=temps;
-        memcpy(tempv,A[i],sizeof(double)*n);
-        memcpy(A[i],A[maxind],sizeof(double)*n);
-        memcpy(A[maxind],tempv,sizeof(double)*n); 
+        memcpy(tempv,&A[i],sizeof(double)*n);
+        memcpy(&A[i],A[maxind],sizeof(double)*n);
+        memcpy(&A[maxind],tempv,sizeof(double)*n); 
       }
     }
     for (j=i+1;j<n;j++) {
