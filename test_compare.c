@@ -56,15 +56,15 @@ int main (int argc, const char * argv[]) {
         temps=pvt[i];
         pvt[i]=pvt[maxind];
         pvt[maxind]=temps;
-        memcpy(tempv,&A[i],sizeof(double)*n);
-        memcpy(&A[i],&A[maxind],sizeof(double)*n);
-        memcpy(&A[maxind],tempv,sizeof(double)*n); 
+        memcpy(tempv,&A[i*n],sizeof(double)*n);
+        memcpy(&A[i*n],&A[maxind*n],sizeof(double)*n);
+        memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
       }
     }
     for (j=i+1;j<n;j++) {
       A[j*n+i]=A[j*n+i]/A[i*n+i];
       for (k=i+1;k<n;k++)
-        A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
+        A[j*n+k]-=A[j*n+i]*A[i*n+k];
     }
   }
   printf("LU:\n");
