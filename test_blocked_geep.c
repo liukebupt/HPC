@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
@@ -24,7 +24,7 @@ int main (int argc, const char * argv[]) {
   int *pvt = (int *)malloc(sizeof(int)*n);
   for (i=0;i<n;i++)
     pvt[i]=i;
-  for (i=0;i<n-1;i++) {
+  for (i=0;i<2-1;i++) {
     maxind=i;
     max=fabs(A_bak[i*n+i]);
     for (j=i+1;j<n;j++) {
@@ -63,7 +63,7 @@ int main (int argc, const char * argv[]) {
   int end;
   for (i=0;i<n;i++)
     pvt[i]=i;
-  for (i=0;i<n;i+=B) {
+  for (i=0;i<2;i+=B) {
     end=i+B;
     for (j=i;j<end;j++) {
       maxind=j;
@@ -107,7 +107,7 @@ int main (int argc, const char * argv[]) {
   for(i=0;i<n;i++)
   {
      for(j=0;j<n;j++)
-        printf("%f ",A_bak[i*n+j]);
+        printf("%f ",A[i*n+j]);
      printf("  %d\n", pvt[i]);
   }
 
