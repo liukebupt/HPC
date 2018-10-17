@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stlib.h>
 #include <string.h>
+#include <math.h>
 
 #define drand() (double)rand()/RAND_MAX*(-2)+1 //return a random double number between -1 and 1.
 
@@ -9,7 +11,7 @@ int main (int argc, const char * argv[]) {
   
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
-  int i, j, k;
+  int i, j, k,l;
   for (i=0; i<n; i++)
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
@@ -86,7 +88,7 @@ int main (int argc, const char * argv[]) {
         }
       }
       for (k=j+1;k<n;k++) {
-        A[k*n+j]=A[k*n+j]/A[j*n+i1];
+        A[k*n+j]=A[k*n+j]/A[j*n+j];
         for (l=j+1;l<end;l++)
           A[k*n+l]=A[k*n+l]-A[k*n+j]*A[j*n+l];
       }
@@ -106,7 +108,7 @@ int main (int argc, const char * argv[]) {
   {
      for(j=0;j<n;j++)
         printf("%f ",A_bak[i*n+j]);
-     printf("  %d\n", pvt2[i]);
+     printf("  %d\n", pvt[i]);
   }
 
   free(A);
