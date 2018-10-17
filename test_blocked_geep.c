@@ -99,6 +99,7 @@ int main (int argc, const char * argv[]) {
         for (l=j+1;l<end;l++)
           A[k*n+l]=A[k*n+l]-A[k*n+j]*A[j*n+l];
       }
+    }
     for (j=i;j<end;j++)
       for (k=j+1;k<end;k++)
         for (l=end;l<n;l++)
@@ -107,7 +108,6 @@ int main (int argc, const char * argv[]) {
       for (k=end;k<n;k++)
         for (l=i;l<end;l++)
           A[j*n+k]-=A[j*n+l]*A[l*n+k];
-    }
   }
   
   printf("Blocked LU:\n");
