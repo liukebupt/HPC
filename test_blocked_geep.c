@@ -1,17 +1,11 @@
 #include <stdio.h>
-#include <lapacke.h>
-//#include <time.h>
-#include <stdbool.h>
-#include <cblas.h>
-#include <math.h>
 #include <string.h>
 
 #define drand() (double)rand()/RAND_MAX*(-2)+1 //return a random double number between -1 and 1.
 
 int main (int argc, const char * argv[]) {
 
-  int n=10;
-  bool test=true
+  int n=10, B=2;
   
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
@@ -22,20 +16,19 @@ int main (int argc, const char * argv[]) {
   memcpy(A_bak,A,sizeof(double)*n*n);
   
   int temps, maxind;
-  double sum, max;
+  double max;
   double *tempv = (double *)malloc(sizeof(double)*n);
   
-  //clock_t start=clock();
   int *pvt = (int *)malloc(sizeof(int)*n);
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n-1;i++) {
     maxind=i;
-    max=fabs(A[i*n+i]);
+    max=fabs(A_bak[i*n+i]);
     for (j=i+1;j<n;j++) {
-      if (fabs(A[j*n+i])>max) {
+      if (fabs(A_bak[j*n+i])>max) {
         maxind = j;
-        max = fabs(A[j*n+i]);
+        max = fabs(A_bak[j*n+i]);
       }
     }
     if (max==0) {
@@ -46,27 +39,75 @@ int main (int argc, const char * argv[]) {
         temps=pvt[i];
         pvt[i]=pvt[maxind];
         pvt[maxind]=temps;
-        memcpy(tempv,&A[i*n],sizeof(double)*n);
-        memcpy(&A[i*n],&A[maxind],sizeof(double)*n);
-        memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
+        memcpy(tempv,&A_bak[i*n],sizeof(double)*n);
+        memcpy(&A_bak[i*n],&A_bak[maxind],sizeof(double)*n);
+        memcpy(&A_bak[maxind*n],tempv,sizeof(double)*n); 
       }
     }
     for (j=i+1;j<n;j++) {
-      A[j*n+i]=A[j*n+i]/A[i*n+i];
+      A_bak[j*n+i]=A_bak[j*n+i]/A_bak[i*n+i];
       for (k=i+1;k<n;k++)
-        A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
+        A_bak[j*n+k]=A_bak[j*n+k]-A_bak[j*n+i]*A_bak[i*n+k];
     }
   }
   printf("Simple LU:\n");
   for(i=0;i<n;i++)
   {
      for(j=0;j<n;j++)
-        printf("%f ",A[i*n+j]);
+        printf("%f ",A_bak[i*n+j]);
      printf("  %d\n", pvt[i]);
   }
   
+  int end;
+  for (i=0;i<n;i++)
+    pvt[i]=i;
+  for (i=0;i<n;i+=B) {
+    end=i+B;
+    for (j=i;j<end;j++) {
+      maxind=j;
+      max=fabs(A[j*n+j]);
+      for (k=j+1;k<n;k++) {
+        if (fabs(A[k*n+j])>max) {
+          maxind = k;
+          max = fabs(A[k*n+j]);
+        }
+      }
+      if (max==0) {
+        printf("LU factoration failed: coefficient matrix is singular\n\n");
+        return -1;
+      } else {
+        if (maxind!=j) {
+          temps=pvt[j];
+          pvt[j]=pvt[maxind];
+          pvt[maxind]=temps;
+          memcpy(tempv,&A[j*n],sizeof(double)*n);
+          memcpy(&A[j*n],&A[maxind],sizeof(double)*n);
+          memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
+        }
+      }
+      for (k=j+1;k<n;k++) {
+        A[k*n+j]=A[k*n+j]/A[j*n+i1];
+        for (l=j+1;l<end;l++)
+          A[k*n+l]=A[k*n+l]-A[k*n+j]*A[j*n+l];
+      }
+    for (j=i;j<end;j++)
+      for (k=j+1;k<end;k++)
+        for (l=end;l<n;l++)
+          A[k*n+l]-=A[k*n+j]*A[j*n+l];
+    for (j=end;j<n;j++)
+      for (k=end;k<n;k++)
+        for (l=i;l<end;l++)
+          A[j*n+k]-=A[j*n+l]*A[l*n+k];
+    }
+  }
   
-  
+  printf("Blocked LU:\n");
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+        printf("%f ",A_bak[i*n+j]);
+     printf("  %d\n", pvt2[i]);
+  }
 
   free(A);
   free(A_bak);
