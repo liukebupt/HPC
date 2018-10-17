@@ -10,11 +10,14 @@ int main (int argc, const char * argv[]) {
   int n=10, B=2;
   
   double *A=(double *)malloc(sizeof(double)*n*n);
+  double *b=(double *)malloc(sizeof(double)*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
   int i, j, k,l;
-  for (i=0; i<n; i++)
+  for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
+    b[i]=drand(); 
+  }
   printf("input:\n");
   for(i=0;i<n;i++)
   {
@@ -27,6 +30,8 @@ int main (int argc, const char * argv[]) {
   int temps, maxind;
   double max;
   double *tempv = (double *)malloc(sizeof(double)*n);
+  double *y = (double *)malloc(sizeof(double)*n);
+  double *x = (double *)malloc(sizeof(double)*n);
   
   int *pvt = (int *)malloc(sizeof(int)*n);
   for (i=0;i<n;i++)
@@ -59,13 +64,26 @@ int main (int argc, const char * argv[]) {
         A_bak[j*n+k]=A_bak[j*n+k]-A_bak[j*n+i]*A_bak[i*n+k];
     }
   }
-  printf("Simple LU:\n");
+  y[0]=b[pvt[0]];
+  for (i=1;i<n;i++) {
+    sum=0;
+    for (j=0;j<i;j++)
+      sum+=y[j]*A_bak[i*n+j];
+    y[i]=b[pvt[i]]-sum;
+  }
+  x[n-1]=y[n-1]/A_bak[(n-1)*n+n-1];
+  for (i=n-1;i>-1;i--) {
+    sum=0;
+    for (j=i+1;j<n;j++)
+      sum+=x[j]*A_bak[i*n+j];
+    x[i]=(y[i]-sum)/A_bak[i*n+i];
+  }
+  printf("Simple LU result:\n");
   for(i=0;i<n;i++)
   {
-     for(j=0;j<n;j++)
-        printf("%f ",A_bak[i*n+j]);
-     printf("  %d\n", pvt[i]);
+     printf("  %f", x[i]);
   }
+  printf("\n");
   
   int end;
   for (i=0;i<n;i++)
@@ -109,6 +127,26 @@ int main (int argc, const char * argv[]) {
         for (l=i;l<end;l++)
           A[j*n+k]-=A[j*n+l]*A[l*n+k];
   }
+  y[0]=b[pvt[0]];
+  for (i=1;i<n;i++) {
+    sum=0;
+    for (j=0;j<i;j++)
+      sum+=y[j]*A_bak[i*n+j];
+    y[i]=b[pvt[i]]-sum;
+  }
+  x[n-1]=y[n-1]/A_bak[(n-1)*n+n-1];
+  for (i=n-1;i>-1;i--) {
+    sum=0;
+    for (j=i+1;j<n;j++)
+      sum+=x[j]*A_bak[i*n+j];
+    x[i]=(y[i]-sum)/A_bak[i*n+i];
+  }
+  printf("Simple LU result:\n");
+  for(i=0;i<n;i++)
+  {
+     printf("  %f", x[i]);
+  }
+  printf("\n");
   
   printf("Blocked LU:\n");
   for(i=0;i<n;i++)
@@ -122,6 +160,8 @@ int main (int argc, const char * argv[]) {
   free(A_bak);
   free(tempv);
   free(pvt);
+  free(y);
+  free(x);
 
   return 0;
 }
