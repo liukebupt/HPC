@@ -15,6 +15,13 @@ int main (int argc, const char * argv[]) {
   for (i=0; i<n; i++)
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
+  printf("input LU:\n");
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+        printf("%f ",A[i*n+j]);
+     printf("\n");
+  }
   memcpy(A_bak,A,sizeof(double)*n*n);
   
   int temps, maxind;
