@@ -41,59 +41,9 @@ int main (int argc, const char * argv[]) {
   double *tempv = (double *)malloc(sizeof(double)*n);
   double *y = (double *)malloc(sizeof(double)*n);
   double *x = (double *)malloc(sizeof(double)*n);
-  double *x1 = (double *)malloc(sizeof(double)*n);
   
   int *pvt = (int *)malloc(sizeof(int)*n);
-  for (i=0;i<n;i++)
-    pvt[i]=i;
-  for (i=0;i<n-1;i++) {
-    maxind=i;
-    max=fabs(A_bak[i*n+i]);
-    for (j=i+1;j<n;j++) {
-      if (fabs(A_bak[j*n+i])>max) {
-        maxind = j;
-        max = fabs(A_bak[j*n+i]);
-      }
-    }
-    if (max==0) {
-      printf("LU factoration failed: coefficient matrix is singular\n\n");
-      return -1;
-    } else {
-      if (maxind!=i) {
-        temps=pvt[i];
-        pvt[i]=pvt[maxind];
-        pvt[maxind]=temps;
-        memcpy(tempv,&A_bak[i*n],sizeof(double)*n);
-        memcpy(&A_bak[i*n],&A_bak[maxind],sizeof(double)*n);
-        memcpy(&A_bak[maxind*n],tempv,sizeof(double)*n); 
-      }
-    }
-    for (j=i+1;j<n;j++) {
-      A_bak[j*n+i]=A_bak[j*n+i]/A_bak[i*n+i];
-      for (k=i+1;k<n;k++)
-        A_bak[j*n+k]=A_bak[j*n+k]-A_bak[j*n+i]*A_bak[i*n+k];
-    }
-  }
-  y[0]=b[pvt[0]];
-  for (i=1;i<n;i++) {
-    sum=0;
-    for (j=0;j<i;j++)
-      sum+=y[j]*A_bak[i*n+j];
-    y[i]=b[pvt[i]]-sum;
-  }
-  x1[n-1]=y[n-1]/A_bak[(n-1)*n+n-1];
-  for (i=n-1;i>-1;i--) {
-    sum=0;
-    for (j=i+1;j<n;j++)
-      sum+=x1[j]*A_bak[i*n+j];
-    x1[i]=(y[i]-sum)/A_bak[i*n+i];
-  }
-  printf("Simple LU result:\n");
-  for(i=0;i<n;i++)
-  {
-     printf("  %f", x1[i]);
-  }
-  printf("\n");
+  int *ipiv = (int *)malloc(sizeof(int)*n);
   
   int end;
   for (i=0;i<n;i++)
@@ -141,27 +91,42 @@ int main (int argc, const char * argv[]) {
   for (i=1;i<n;i++) {
     sum=0;
     for (j=0;j<i;j++)
-      sum+=y[j]*A_bak[i*n+j];
+      sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
-  x[n-1]=y[n-1]/A_bak[(n-1)*n+n-1];
+  x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
     for (j=i+1;j<n;j++)
-      sum+=x[j]*A_bak[i*n+j];
-    x[i]=(y[i]-sum)/A_bak[i*n+i];
+      sum+=x[j]*A[i*n+j];
+    x[i]=(y[i]-sum)/A[i*n+i];
   }
+  /*
   printf("Blocked LU result:\n");
   for(i=0;i<n;i++)
   {
      printf("  %f", x[i]);
   }
   printf("\n");
+  */
+  
+  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
+  for (i=0;i<n;i++)
+  {
+    ipiv[i]--;
+    if (ipiv[i]!=i) {
+      temp=b[i];
+      b[i]=b[ipiv[i]];
+      b[ipiv[i]]=temp;
+    }
+  }
+  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
+  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
 
   double cur_diff, max_diff=0;
 
   for(i=0;i<n;i++) {
-    cur_diff=fabs((x1[i]-x[i])/x1[i]);
+    cur_diff=fabs((b[i]-x[i])/b[i]);
     if (cur_diff > max_diff)
       max_diff=cur_diff;
   }
@@ -173,7 +138,7 @@ int main (int argc, const char * argv[]) {
   free(pvt);
   free(y);
   free(x);
-  free(x1);
+  free(ipiv);
 
   return 0;
 }
