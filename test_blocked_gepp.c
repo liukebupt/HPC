@@ -52,7 +52,7 @@ int main (int argc, const char * argv[]) {
     pvt[i]=i;
   for (i=0;i<n;i+=B) {
     end=i+B;
-    for (j=i;j<end;j++) {
+    for (j=i;j<end-1;j++) {
       maxind=j;
       max=fabs(A[j*n+j]);
       for (k=j+1;k<n;k++) {
