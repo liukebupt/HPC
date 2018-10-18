@@ -7,7 +7,7 @@
 
 int main (int argc, const char * argv[]) {
   
-  if (argc!=3) {
+  if (argc!=4) {
     printf("Invalid input!\n");
     return 0;
   }
