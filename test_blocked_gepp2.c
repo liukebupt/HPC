@@ -70,7 +70,7 @@ int main (int argc, const char * argv[]) {
           pvt[j]=pvt[maxind];
           pvt[maxind]=temps;
           memcpy(tempv,&A[j*n],sizeof(double)*n);
-          memcpy(&A[j*n],&A[maxind],sizeof(double)*n);
+          memcpy(&A[j*n],&A[maxind*n],sizeof(double)*n);
           memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
         }
       }
@@ -151,9 +151,9 @@ int main (int argc, const char * argv[]) {
         temps=pvt[i];
         pvt[i]=pvt[maxind];
         pvt[maxind]=temps;
-        memcpy(tempv,&A[i],sizeof(double)*n);
-        memcpy(&A[i],&A[maxind],sizeof(double)*n);
-        memcpy(&A[maxind],tempv,sizeof(double)*n); 
+        memcpy(tempv,&A[i*n],sizeof(double)*n);
+        memcpy(&A[i*n],&A[maxind*n],sizeof(double)*n);
+        memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
       }
     }
     printf("Simple LU after %d pivot:\n", i+1);
@@ -177,8 +177,8 @@ int main (int argc, const char * argv[]) {
   printf("Simple LU:\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++)
-      printf("%f  ", A[i*n+j]);
-    printf("\n");
+      printf("%f ", A[i*n+j]);
+    printf("%d\n", pvt[i]);
   }
   
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
