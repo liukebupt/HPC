@@ -8,15 +8,15 @@
 #include <stdbool.h>
 
 #define drand() (double)rand()/RAND_MAX*(-2)+1 //return a random double number between -1 and 1.
-#define n 5000
 
 int main (int argc, const char * argv[]) {
   
-  if (argc!=3) {
+  if (argc!=4) {
     printf("Invalid input!\n");
     return 0;
   }
-  int B=atoi(argv[1]);
+  int n=atoi(argv[1]);
+  int B=atoi(argv[2]);
   printf("Testing blocked gepp with n=%d, B=%d.\n", n, B);
   
   bool test=false;
@@ -35,13 +35,12 @@ int main (int argc, const char * argv[]) {
   memcpy(A_bak,A,sizeof(double)*n*n);
   
   int temps, maxind, end;
-  double max, sum, temp;
+  double max, sum;
   double *tempv = (double *)malloc(sizeof(double)*n);
   double *y = (double *)malloc(sizeof(double)*n);
   double *x = (double *)malloc(sizeof(double)*n);
   
   int *pvt = (int *)malloc(sizeof(int)*n);
-  int *ipiv = (int *)malloc(sizeof(int)*n);
 
   clock_t start=clock();
   for (i=0;i<n;i++)
@@ -101,22 +100,22 @@ int main (int argc, const char * argv[]) {
   }
   printf("Cost %.2f seconds by my approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
-  start=clock();
-  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
-  for (i=0;i<n;i++)
-  {
-    ipiv[i]--;
-    if (ipiv[i]!=i) {
-      temp=b[i];
-      b[i]=b[ipiv[i]];
-      b[ipiv[i]]=temp;
-    }
-  }
-  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
-  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
-  printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
-
   if (test) {
+    double temp;
+    int *ipiv = (int *)malloc(sizeof(int)*n);
+    LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
+    for (i=0;i<n;i++)
+    {
+      ipiv[i]--;
+      if (ipiv[i]!=i) {
+        temp=b[i];
+        b[i]=b[ipiv[i]];
+        b[ipiv[i]]=temp;
+      }
+    }
+    cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
+    cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
+  
     double cur_diff, max_diff=0;
     for(i=0;i<n;i++) {
       cur_diff=fabs((b[i]-x[i])/b[i]);
@@ -124,16 +123,16 @@ int main (int argc, const char * argv[]) {
         max_diff=cur_diff;
     }
     printf("max relative difference is %.16f.\n", max_diff);
+    free(ipiv);
   }
   
+  free(A_bak);
   free(A);
   free(b);
-  free(A_bak);
   free(tempv);
   free(pvt);
   free(y);
   free(x);
-  free(ipiv);
 
   return 0;
 }
