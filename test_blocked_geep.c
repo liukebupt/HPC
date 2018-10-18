@@ -6,8 +6,17 @@
 #define drand() (double)rand()/RAND_MAX*(-2)+1 //return a random double number between -1 and 1.
 
 int main (int argc, const char * argv[]) {
+  
+  if (argc!=3) {
+    printf("Invalid input!\n");
+    return 0;
+  }
 
-  int n=10, B=2;
+  int size=atoi(argv[1]);
+  int n=atoi(argv[2]);
+  int B=atoi(argv[3]);
+
+  printf("Testing blocked gepp with size=%d, n=%d, B=%d.\n", size, n, B);
   
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
@@ -15,8 +24,8 @@ int main (int argc, const char * argv[]) {
   int i, j, k,l;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
-      A[i*n+j]=drand();
-    b[i]=drand(); 
+      A[i*n+j]=drand()*size;
+    b[i]=drand()*size; 
   }
   printf("input:\n");
   for(i=0;i<n;i++)
@@ -28,10 +37,11 @@ int main (int argc, const char * argv[]) {
   memcpy(A_bak,A,sizeof(double)*n*n);
   
   int temps, maxind;
-  double max;
+  double max, sum;
   double *tempv = (double *)malloc(sizeof(double)*n);
   double *y = (double *)malloc(sizeof(double)*n);
   double *x = (double *)malloc(sizeof(double)*n);
+  double *x1 = (double *)malloc(sizeof(double)*n);
   
   int *pvt = (int *)malloc(sizeof(int)*n);
   for (i=0;i<n;i++)
@@ -71,17 +81,17 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A_bak[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
-  x[n-1]=y[n-1]/A_bak[(n-1)*n+n-1];
+  x1[n-1]=y[n-1]/A_bak[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
     for (j=i+1;j<n;j++)
-      sum+=x[j]*A_bak[i*n+j];
-    x[i]=(y[i]-sum)/A_bak[i*n+i];
+      sum+=x1[j]*A_bak[i*n+j];
+    x1[i]=(y[i]-sum)/A_bak[i*n+i];
   }
   printf("Simple LU result:\n");
   for(i=0;i<n;i++)
   {
-     printf("  %f", x[i]);
+     printf("  %f", x1[i]);
   }
   printf("\n");
   
@@ -148,12 +158,22 @@ int main (int argc, const char * argv[]) {
   }
   printf("\n");
 
+  double cur_diff, max_diff=0;
+
+  for(i=0;i<n;i++) {
+    cur_diff=fabs((x1[i]-x[i])/x1[i]);
+    if (cur_diff > max_diff)
+      max_diff=cur_diff;
+  }
+  printf("max relative difference is %.16f.\n", max_diff);
+
   free(A);
   free(A_bak);
   free(tempv);
   free(pvt);
   free(y);
   free(x);
+  free(x1);
 
   return 0;
 }
