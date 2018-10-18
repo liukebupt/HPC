@@ -78,7 +78,7 @@ int main (int argc, const char * argv[]) {
       for (k=0;k<n;k++) {
         for (l=0;l<n;l++)
           printf("%f\t", A[k*n+l]);
-        printf("%d\n", pvt[k]);
+        printf("%d\n\n", pvt[k]);
       }
       for (k=j+1;k<n;k++) {
         A[k*n+j]=A[k*n+j]/A[j*n+j];
