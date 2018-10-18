@@ -34,7 +34,7 @@ int main (int argc, const char * argv[]) {
   {
      for(j=0;j<n;j++)
         printf("%f ",A[i*n+j]);
-     printf("%d\n", pvt[i]);
+     printf("\n");
   }
   memcpy(A_bak,A,sizeof(double)*n*n);
   
@@ -92,7 +92,7 @@ int main (int argc, const char * argv[]) {
   printf("Blocked LU:\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++)
-      printf("%f  ", A[i*n+j]);
+      printf("%f ", A[i*n+j]);
     printf("%d\n", pvt[i]);
   }
   y[0]=b[pvt[0]];
