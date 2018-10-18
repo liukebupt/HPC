@@ -33,8 +33,8 @@ int main (int argc, const char * argv[]) {
   for(i=0;i<n;i++)
   {
      for(j=0;j<n;j++)
-        printf("%f ",A[i*n+j]);
-     printf("\n");
+        printf("%f\t",A[i*n+j]);
+     printf("\n\n");
   }
   memcpy(A_bak,A,sizeof(double)*n*n);
   
@@ -77,7 +77,7 @@ int main (int argc, const char * argv[]) {
       printf("Blocked LU after %d pivot:\n", j+1);
       for (k=0;k<n;k++) {
         for (l=0;l<n;l++)
-          printf("%f ", A[k*n+l]);
+          printf("%f\t", A[k*n+l]);
         printf("%d\n", pvt[k]);
       }
       for (k=j+1;k<n;k++) {
@@ -88,8 +88,8 @@ int main (int argc, const char * argv[]) {
       printf("Blocked LU after %d:\n", j+1);
       for (k=0;k<n;k++) {
         for (l=0;l<n;l++)
-          printf("%f ", A[k*n+l]);
-        printf("%d\n", pvt[k]);
+          printf("%f\t", A[k*n+l]);
+        printf("%d\n\n", pvt[k]);
       }
     }
     for (j=i;j<end;j++)
@@ -104,8 +104,8 @@ int main (int argc, const char * argv[]) {
   printf("Blocked LU:\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++)
-      printf("%f ", A[i*n+j]);
-    printf("%d\n", pvt[i]);
+      printf("%f\t", A[i*n+j]);
+    printf("%d\n\n", pvt[i]);
   }
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
@@ -128,8 +128,8 @@ int main (int argc, const char * argv[]) {
   for(i=0;i<n;i++)
   {
      for(j=0;j<n;j++)
-        printf("%f ",A[i*n+j]);
-     printf("\n");
+        printf("%f\t",A[i*n+j]);
+     printf("\n\n");
   }
   
   for (i=0;i<n;i++)
@@ -159,8 +159,8 @@ int main (int argc, const char * argv[]) {
     printf("Simple LU after %d pivot:\n", i+1);
     for (k=0;k<n;k++) {
       for (l=0;l<n;l++)
-        printf("%f ", A[k*n+l]);
-      printf("%d\n", pvt[k]);
+        printf("%f\t", A[k*n+l]);
+      printf("%d\n\n", pvt[k]);
     }
     for (j=i+1;j<n;j++) {
       A[j*n+i]=A[j*n+i]/A[i*n+i];
@@ -170,15 +170,15 @@ int main (int argc, const char * argv[]) {
     printf("Simple LU after %d:\n", i+1);
     for (k=0;k<n;k++) {
       for (l=0;l<n;l++)
-        printf("%f ", A[k*n+l]);
-      printf("%d\n", pvt[k]);
+        printf("%f\t", A[k*n+l]);
+      printf("%d\n\n", pvt[k]);
     }
   }
   printf("Simple LU:\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++)
-      printf("%f ", A[i*n+j]);
-    printf("%d\n", pvt[i]);
+      printf("%f\t", A[i*n+j]);
+    printf("%d\n\n", pvt[i]);
   }
   
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
