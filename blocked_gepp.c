@@ -116,15 +116,16 @@ int main (int argc, const char * argv[]) {
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
   printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
 
-  double cur_diff, max_diff=0;
-
-  for(i=0;i<n;i++) {
-    cur_diff=fabs((b[i]-x[i])/b[i]);
-    if (cur_diff > max_diff)
-      max_diff=cur_diff;
+  if (test) {
+    double cur_diff, max_diff=0;
+    for(i=0;i<n;i++) {
+      cur_diff=fabs((b[i]-x[i])/b[i]);
+      if (cur_diff > max_diff)
+        max_diff=cur_diff;
+    }
+    printf("max relative difference is %.16f.\n", max_diff);
   }
-  printf("max relative difference is %.16f.\n", max_diff);
-
+  
   free(A);
   free(b);
   free(A_bak);
