@@ -26,7 +26,7 @@ int main (int argc, const char * argv[]) {
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
-  int i, j, k, l;
+  int i, j, k, l, j1, k1;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
