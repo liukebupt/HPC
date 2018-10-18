@@ -79,10 +79,12 @@ int main (int argc, const char * argv[]) {
       for (k=j+1;k<end;k++)
         for (l=end;l<n;l++)
           A[k*n+l]-=A[k*n+j]*A[j*n+l];
-    for (j=end;j<n;j++)
-      for (k=end;k<n;k++)
-        for (l=i;l<end;l++)
-          A[j*n+k]-=A[j*n+l]*A[l*n+k];
+    for (j=end;j<n;j+=B)
+      for (k=end;k<n;k+=B)
+        for (j1=j;j<j+B;j1++)
+          for (k1=k;k<k+B;k1++)
+            for (l=i;l<end;l++)
+              A[j1*n+k1]-=A[j1*n+l]*A[l*n+k1];
   }
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
