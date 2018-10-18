@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 
-#define drand() (double)rand()/RAND_MAX*(-2)+1 //return a random double number between -1 and 1.
+#define drand() ((double)rand()/RAND_MAX*(-2)+1) //return a random double number between -1 and 1.
 
 int main (int argc, const char * argv[]) {
   
