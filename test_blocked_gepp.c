@@ -39,7 +39,7 @@ int main (int argc, const char * argv[]) {
   memcpy(A_bak,A,sizeof(double)*n*n);
   
   int temps, maxind;
-  double max, sum;
+  double max, sum, temp;
   double *tempv = (double *)malloc(sizeof(double)*n);
   double *y = (double *)malloc(sizeof(double)*n);
   double *x = (double *)malloc(sizeof(double)*n);
