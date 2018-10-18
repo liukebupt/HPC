@@ -17,7 +17,7 @@ int main (int argc, const char * argv[]) {
     return 0;
   }
   int B=atoi(argv[1]);
-  printf("Testing blocked gepp with n=%d, B=%d.\n", size, n, B);
+  printf("Testing blocked gepp with n=%d, B=%d.\n", n, B);
   
   bool test=false;
   if (argv[2][0]=='T')
