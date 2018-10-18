@@ -141,20 +141,12 @@ int main (int argc, const char * argv[]) {
       sum+=x[j]*A_bak[i*n+j];
     x[i]=(y[i]-sum)/A_bak[i*n+i];
   }
-  printf("Simple LU result:\n");
+  printf("Blocked LU result:\n");
   for(i=0;i<n;i++)
   {
      printf("  %f", x[i]);
   }
   printf("\n");
-  
-  printf("Blocked LU:\n");
-  for(i=0;i<n;i++)
-  {
-     for(j=0;j<n;j++)
-        printf("%f ",A[i*n+j]);
-     printf("  %d\n", pvt[i]);
-  }
 
   free(A);
   free(A_bak);
