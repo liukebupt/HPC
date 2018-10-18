@@ -20,7 +20,7 @@ int main (int argc, const char * argv[]) {
   printf("Testing blocked gepp with n=%d, B=%d.\n", n, B);
   
   bool test=false;
-  if (argv[2][0]=='T')
+  if (argv[3][0]=='T')
     test=true;
   
   double *A=(double *)malloc(sizeof(double)*n*n);
