@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <lapacke.h>
+#include <cblas.h>
 
 #define drand() ((double)rand()/RAND_MAX*(-2)+1) //return a random double number between -1 and 1.
 
