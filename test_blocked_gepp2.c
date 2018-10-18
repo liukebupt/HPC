@@ -79,6 +79,12 @@ int main (int argc, const char * argv[]) {
         for (l=j+1;l<end;l++)
           A[k*n+l]=A[k*n+l]-A[k*n+j]*A[j*n+l];
       }
+      printf("Blocked LU after %d:\n", j);
+      for (k=0;k<n;k++) {
+        for (l=0;l<n;l++)
+          printf("%f ", A[k*n+l]);
+        printf("%d\n", pvt[k]);
+      }
     }
     for (j=i;j<end;j++)
       for (k=j+1;k<end;k++)
@@ -112,6 +118,14 @@ int main (int argc, const char * argv[]) {
   
   memcpy(A,A_bak,sizeof(double)*n*n);
   
+  printf("input:\n");
+  for(i=0;i<n;i++)
+  {
+     for(j=0;j<n;j++)
+        printf("%f ",A[i*n+j]);
+     printf("\n");
+  }
+  
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n-1;i++) {
@@ -140,6 +154,12 @@ int main (int argc, const char * argv[]) {
       A[j*n+i]=A[j*n+i]/A[i*n+i];
       for (k=i+1;k<n;k++)
         A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
+    }
+    printf("Simple LU after %d:\n", i);
+    for (k=0;k<n;k++) {
+      for (l=0;l<n;l++)
+        printf("%f ", A[k*n+l]);
+      printf("%d\n", pvt[k]);
     }
   }
   printf("Simple LU:\n");
