@@ -49,13 +49,15 @@ int main (int argc, const char * argv[]) {
     end=i+B;
     for (j=i;j<end;j++) {
       maxind=j;
-      max=fabs(A[j*n+j]);
+      register p=j*n+j;
+      max=fabs(A[p]);
+      p+=n;
       for (k=j+1;k<n;k++) {
-        register p=k*n+j
         if (fabs(A[p])>max) {
           maxind = k;
           max = fabs(A[p]);
         }
+        p+=n;
       }
       if (max==0) {
         printf("LU factoration failed: coefficient matrix is singular\n\n");
