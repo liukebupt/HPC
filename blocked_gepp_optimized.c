@@ -81,8 +81,8 @@ int main (int argc, const char * argv[]) {
           A[k*n+l]-=A[k*n+j]*A[j*n+l];
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
-        for (j1=j;j<j+B;j1++)
-          for (k1=k;k<k+B;k1++)
+        for (j1=j;j1<j+B;j1++)
+          for (k1=k;k1<k+B;k1++)
             for (l=i;l<end;l++)
               A[j1*n+k1]-=A[j1*n+l]*A[l*n+k1];
   }
