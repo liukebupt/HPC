@@ -71,28 +71,43 @@ int main (int argc, const char * argv[]) {
           memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
         }
       }
-      register int p1=j*n+j;       //k*n+j
-      register double a1=A[j*n+j];
+      p=j*n+j;
+      register int p1=p;       //k*n+j
+      register double a1=A[p1];
       for (k=j+1;k<n;k++) {
         p1+=n;
         A[p1]/=a1;
         register double a=A[p1];
-        register int p2=p1;          //k*n+l
-        register int p3=j*n+j;         //j*n+l
+        register int p2=p1;        //k*n+l
+        register int p3=p;     //j*n+l
         for (l=j+1;l<end;l++) {
           p3+=1;
           p2+=1;
-          A[p2]-=a*A[j*n+l];
+          A[p2]-=a*A[p3];
         }
       }
     }
-    for (l=end;l<n;l++)
+    
+    register int p4=i*n
+    register int p1=p4+i;         //k*n+i
+    for (l=end;l<n;l++) {
+      register int p=p4+l;         //k*n+l
       for (k=i+1;k<end;k++) {
-        register double a=A[k*n+l];
-        for (j=i;j<k;j++)
-          a-=A[k*n+j]*A[j*n+l];
-        A[k*n+l]=a;
+        p1+=n;
+        p+=n;
+        register double a=A[p];
+        register int p2=p1;     //k*n+j
+        register int p3=p4+l;     //j*n+l
+        for (j=i;j<k;j++) {
+          a-=A[p2]*A[p3];
+          p2+=1;
+          p3+=n;
+        }
+        A[p]=a;
       }
+      
+    }
+    
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1+=4)
