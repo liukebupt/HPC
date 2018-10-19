@@ -26,7 +26,7 @@ int main (int argc, const char * argv[]) {
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
-  int i, j, k, l, j1, k1;
+  int i, j, k, l, j1, k1, l1;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
@@ -76,9 +76,12 @@ int main (int argc, const char * argv[]) {
       }
     }
     for (j=i;j<end;j++)
-      for (k=j+1;k<end;k++)
-        for (l=end;l<n;l++)
-          A[k*n+l]-=A[k*n+j]*A[j*n+l];
+      for (k=j+1;k<end;k++) {
+        register double a=A[k*n+j];
+        for (l=end;l<n;l+=B) 
+          for (l1=l;l1<l+B;l1++)
+            A[k*n+l1]-=a*A[j*n+l1];
+      }
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1++)
