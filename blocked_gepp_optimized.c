@@ -76,16 +76,12 @@ int main (int argc, const char * argv[]) {
       }
     }
     for (k=i+1;k<end;k++)
-      for (l=end;l<n;l++) 
+      for (l=end;l<n;l++) {
+        register double a=A[k*n+l];
         for (j=i;j<k;j++)
-          A[k*n+l]-=A[k*n+j]*A[j*n+l];
-    /*
-    for (j=i;j<end;j++)
-      for (k=j+1;k<end;k++) {
-        for (l=end;l<n;l++) 
-            A[k*n+l]-=A[k*n+j]*A[j*n+l];
+          a-=A[k*n+j]*A[j*n+l];
+        A[k*n+l]=a;
       }
-      */
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1++)
