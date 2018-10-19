@@ -71,8 +71,9 @@ int main (int argc, const char * argv[]) {
       }
       for (k=j+1;k<n;k++) {
         A[k*n+j]=A[k*n+j]/A[j*n+j];
+        register double a=A[k*n+j];
         for (l=j+1;l<end;l++)
-          A[k*n+l]=A[k*n+l]-A[k*n+j]*A[j*n+l];
+          A[k*n+l]-=a*A[j*n+l];
       }
     }
     for (l=end;l<n;l++)
