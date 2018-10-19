@@ -26,7 +26,7 @@ int main (int argc, const char * argv[]) {
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
-  int i, j, k, l, j1, k1, l1;
+  int i, j, k, l, j1, k1;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
@@ -85,12 +85,20 @@ int main (int argc, const char * argv[]) {
       }
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
-        for (j1=j;j1<j+B;j1++)
-          for (k1=k;k1<k+B;k1++) {
-            register double a=A[j1*n+k1];
-            for (l=i;l<end;l++)
-              a-=A[j1*n+l]*A[l*n+k1];
-            A[j1*n+k1]=a;
+        for (j1=j;j1<j+B;j1+=2)
+          for (k1=k;k1<k+B;k1+=2) {
+            register double c00=A[j1*n+k1], c01=A[j1*n+k1+1], c10=A[j1*n+k1+n], c11=A[j1*n+k1+n+1];
+            register double a0=A[j1*n+l], a1=A[j1*n+l+n], b0=A[l*n+k1], b1=A[l*n+k1+1];
+            for (l=i;l<end;l++) {
+              c00-=a0*b0;
+              c01-=a0*b1;
+              c10-=a1*b0;
+              c11-=a1*b1;
+            }
+            A[j1*n+k1]=c00;
+            A[j1*n+k1+1]=c01;
+            A[j1*n+k1+n]=c10;
+            A[j1*n+k1+n+1]=c11;
           }
   }
   y[0]=b[pvt[0]];
