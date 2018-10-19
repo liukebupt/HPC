@@ -91,9 +91,9 @@ int main (int argc, const char * argv[]) {
             register double c10=A[j1*n+k1+n], c11=A[j1*n+k1+1+n], c12=A[j1*n+k1+2+n], c13=A[j1*n+k1+3+n];
             register double c20=A[j1*n+k1+2*n], c21=A[j1*n+k1+1+2*n], c22=A[j1*n+k1+2+2*n], c23=A[j1*n+k1+3+2*n];
             register double c30=A[j1*n+k1+3*n], c31=A[j1*n+k1+1+3*n], c32=A[j1*n+k1+2+3*n], c33=A[j1*n+k1+3+3*n];
-            register double a0=A[j1*n+l], a1=A[j1*n+l+n], b0=A[l*n+k1], b1=A[l*n+k1+1];
-            register double a2=A[j1*n+l+2*n], a3=A[j1*n+l+3*n], b2=A[l*n+k1+2], b3=A[l*n+k1+3];
             for (l=i;l<end;l++) {
+              register double a0=A[j1*n+l], a1=A[j1*n+l+n], b0=A[l*n+k1], b1=A[l*n+k1+1];
+              register double a2=A[j1*n+l+2*n], a3=A[j1*n+l+3*n], b2=A[l*n+k1+2], b3=A[l*n+k1+3];
               c00-=a0*b0;
               c01-=a0*b1;
               c02-=a0*b2;
