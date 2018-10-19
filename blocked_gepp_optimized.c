@@ -49,15 +49,14 @@ int main (int argc, const char * argv[]) {
     end=i+B;
     for (j=i;j<end;j++) {
       maxind=j;
-      register p=j*n+j;
+      register int p=j*n+j;
       max=fabs(A[p]);
-      p+=n;
       for (k=j+1;k<n;k++) {
+        p+=n;
         if (fabs(A[p])>max) {
           maxind = k;
           max = fabs(A[p]);
         }
-        p+=n;
       }
       if (max==0) {
         printf("LU factoration failed: coefficient matrix is singular\n\n");
@@ -72,11 +71,19 @@ int main (int argc, const char * argv[]) {
           memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
         }
       }
+      register int p1=j*n+j;       //k*n+j
+      register double a1=A[j*n+j];
       for (k=j+1;k<n;k++) {
-        A[k*n+j]=A[k*n+j]/A[j*n+j];
-        register double a=A[k*n+j];
-        for (l=j+1;l<end;l++)
-          A[k*n+l]-=a*A[j*n+l];
+        p1+=n;
+        A[p1]/=a1;
+        register double a=A[p1];
+        register int p2=p1;          //k*n+l
+        register int p3=j*n+j;         //j*n+l
+        for (l=j+1;l<end;l++) {
+          p3+=1;
+          p2+=1;
+          A[p2]-=a*A[j*n+l];
+        }
       }
     }
     for (l=end;l<n;l++)
