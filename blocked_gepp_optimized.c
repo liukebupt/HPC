@@ -51,9 +51,10 @@ int main (int argc, const char * argv[]) {
       maxind=j;
       max=fabs(A[j*n+j]);
       for (k=j+1;k<n;k++) {
-        if (fabs(A[k*n+j])>max) {
+        register p=k*n+j
+        if (fabs(A[p])>max) {
           maxind = k;
-          max = fabs(A[k*n+j]);
+          max = fabs(A[p]);
         }
       }
       if (max==0) {
