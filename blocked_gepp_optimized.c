@@ -83,7 +83,7 @@ int main (int argc, const char * argv[]) {
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1+=2)
           for (k1=k;k1<k+B;k1+=4) {
-            register double c00=A[j1*n+k1], c01=A[j1*n+k1+1], c10=A[j1*n+k1+n], c11=A[j1*n+k1+1+n];
+            register double c00=A[j1*n+k1], c01=A[j1*n+k1+1], c02=A[j1*n+k1+2], c03=A[j1*n+k1+3];
             register double c10=A[j1*n+k1+n], c11=A[j1*n+k1+1+n], c12=A[j1*n+k1+2+n], c13=A[j1*n+k1+3+n];
             for (l=i;l<end;l++) {
               register double a0=A[j1*n+l], a1=A[j1*n+l+n], b0=A[l*n+k1], b1=A[l*n+k1+1];
