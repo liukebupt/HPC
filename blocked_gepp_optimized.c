@@ -82,19 +82,29 @@ int main (int argc, const char * argv[]) {
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1+=2)
-          for (k1=k;k1<k+B;k1+=2) {
+          for (k1=k;k1<k+B;k1+=4) {
             register double c00=A[j1*n+k1], c01=A[j1*n+k1+1], c10=A[j1*n+k1+n], c11=A[j1*n+k1+1+n];
+            register double c10=A[j1*n+k1+n], c11=A[j1*n+k1+1+n], c12=A[j1*n+k1+2+n], c13=A[j1*n+k1+3+n];
             for (l=i;l<end;l++) {
               register double a0=A[j1*n+l], a1=A[j1*n+l+n], b0=A[l*n+k1], b1=A[l*n+k1+1];
+              register double b2=A[l*n+k1+2], b3=A[l*n+k1+3];
               c00-=a0*b0;
               c01-=a0*b1;
+              c02-=a0*b2;
+              c03-=a0*b3;
               c10-=a1*b0;
               c11-=a1*b1;
+              c12-=a1*b2;
+              c13-=a1*b3;
             }
             A[j1*n+k1]=c00;
             A[j1*n+k1+1]=c01;
+            A[j1*n+k1+2]=c02;
+            A[j1*n+k1+3]=c03;
             A[j1*n+k1+n]=c10;
             A[j1*n+k1+n+1]=c11;
+            A[j1*n+k1+n+2]=c12;
+            A[j1*n+k1+n+3]=c13;
           }
   }
   y[0]=b[pvt[0]];
