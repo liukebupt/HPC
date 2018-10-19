@@ -82,9 +82,12 @@ int main (int argc, const char * argv[]) {
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1++)
-          for (k1=k;k1<k+B;k1++)
+          for (k1=k;k1<k+B;k1++) {
+            register double a=A[j1*n+k1];
             for (l=i;l<end;l++)
-              A[j1*n+k1]-=A[j1*n+l]*A[l*n+k1];
+              a-=A[j1*n+l]*A[l*n+k1];
+            A[j1*n+k1]=a;
+          }
   }
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
