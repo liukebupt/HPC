@@ -100,6 +100,11 @@ int main (int argc, const char * argv[]) {
   }
   printf("Cost %.2f seconds by my approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
+  printf("My result:\n");
+  for (i=0;i<n;i++)
+    printf("%f\t", x[i]);
+  printf("\n\n");
+  
   if (test) {
     double temp;
     int *ipiv = (int *)malloc(sizeof(int)*n);
@@ -115,6 +120,11 @@ int main (int argc, const char * argv[]) {
     }
     cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
     cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
+    
+    printf("LAPACK result:\n");
+    for (i=0;i<n;i++)
+      printf("%f\t", b[i]);
+    printf("\n\n");
   
     double cur_diff, max_diff=0;
     for(i=0;i<n;i++) {
