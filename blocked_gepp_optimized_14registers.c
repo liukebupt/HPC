@@ -15,8 +15,8 @@ int main (int argc, const char * argv[]) {
     printf("Invalid input!\n");
     return 0;
   }
-  register int n=atoi(argv[1]);
-  register int B=atoi(argv[2]);
+  int n=atoi(argv[1]);
+  int B=atoi(argv[2]);
   printf("Testing blocked gepp with n=%d, B=%d.\n", n, B);
   
   bool test=false;
@@ -26,7 +26,7 @@ int main (int argc, const char * argv[]) {
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
-  register int i, j, k, l, j1, k1;
+  int i, j, k, l, j1, k1;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
@@ -34,8 +34,8 @@ int main (int argc, const char * argv[]) {
   }
   memcpy(A_bak,A,sizeof(double)*n*n);
   
-  register int temps, maxind, end;
-  register double max, sum;
+  int temps, maxind, end;
+  double max, sum;
   double *tempv = (double *)malloc(sizeof(double)*n);
   double *y = (double *)malloc(sizeof(double)*n);
   double *x = (double *)malloc(sizeof(double)*n);
@@ -49,13 +49,11 @@ int main (int argc, const char * argv[]) {
     end=i+B;
     for (j=i;j<end;j++) {
       maxind=j;
-      register int p=j*n+j;   //k*n+j
-      max=fabs(A[p]);
+      max=fabs(A[k*n+j]);
       for (k=j+1;k<n;k++) {
-        p+=n;
-        if (fabs(A[p])>max) {
+        if (fabs(A[k*n+j])>max) {
           maxind = k;
-          max = fabs(A[p]);
+          max = fabs(A[k*n+j]);
         }
       }
       if (max==0) {
@@ -125,11 +123,6 @@ int main (int argc, const char * argv[]) {
   }
   printf("Cost %.2f seconds by my approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
-  printf("My result:\n");
-  for (i=0;i<n;i++)
-    printf("%f\t", x[i]);
-  printf("\n\n");
-  
   if (test) {
     double temp;
     int *ipiv = (int *)malloc(sizeof(int)*n);
@@ -145,11 +138,6 @@ int main (int argc, const char * argv[]) {
     }
     cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
     cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
-    
-    printf("LAPACK result:\n");
-    for (i=0;i<n;i++)
-      printf("%f\t", b[i]);
-    printf("\n\n");
   
     double cur_diff, max_diff=0;
     for(i=0;i<n;i++) {
