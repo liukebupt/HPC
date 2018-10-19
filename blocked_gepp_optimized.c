@@ -89,9 +89,9 @@ int main (int argc, const char * argv[]) {
     }
     
     register int p4=i*n;
-    register int p1=p4+i;         //k*n+i
     for (l=end;l<n;l++) {
       register int p=p4+l;         //k*n+l
+      register int p1=p4+i;         //k*n+i
       for (k=i+1;k<end;k++) {
         p1+=n;
         p+=n;
