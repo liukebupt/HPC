@@ -15,8 +15,8 @@ int main (int argc, const char * argv[]) {
     printf("Invalid input!\n");
     return 0;
   }
-  int n=atoi(argv[1]);
-  int B=atoi(argv[2]);
+  register int n=atoi(argv[1]);
+  register int B=atoi(argv[2]);
   printf("Testing blocked gepp with n=%d, B=%d.\n", n, B);
   
   bool test=false;
@@ -26,7 +26,7 @@ int main (int argc, const char * argv[]) {
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
-  int i, j, k, l, j1, k1;
+  register int i, j, k, l, j1, k1;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
       A[i*n+j]=drand();
@@ -34,7 +34,7 @@ int main (int argc, const char * argv[]) {
   }
   memcpy(A_bak,A,sizeof(double)*n*n);
   
-  int temps, maxind, end;
+  register int temps, maxind, end;
   double max, sum;
   double *tempv = (double *)malloc(sizeof(double)*n);
   double *y = (double *)malloc(sizeof(double)*n);
