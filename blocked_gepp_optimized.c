@@ -79,10 +79,23 @@ int main (int argc, const char * argv[]) {
       for (k=j+1;k<end;k++)
         for (l=end;l<n;l++)
           A[k*n+l]-=A[k*n+j]*A[j*n+l];
-    for (j=end;j<n;j++)
-      for (k=end;k<n;k++)
-        for (l=i;l<end;l++)
-          A[j*n+k]-=A[j*n+l]*A[l*n+k];
+    for (j=end;j<n;j+=B)
+      for (k=end;k<n;k+=B)
+        for (j1=j;j1<j+B;j1+=2)
+          for (k1=k;k1<k+B;k1+=2) {
+            register double c00=A[j1*n+k1], c01=A[j1*n+k1+1], c10=A[j1*n+k1+n], c11=A[j1*n+k1+1+n];
+            for (l=i;l<end;l++) {
+              register double a0=A[j1*n+l], a1=A[j1*n+l+n], b0=A[l*n+k1], b1=A[l*n+k1+1];
+              c00-=a0*b0;
+              c01-=a0*b1;
+              c10-=a1*b0;
+              c11-=a1*b1;
+            }
+            A[j1*n+k1]=c00;
+            A[j1*n+k1+1]=c01;
+            A[j1*n+k1+n]=c10;
+            A[j1*n+k1+n+1]=c11;
+          }
   }
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
