@@ -78,12 +78,12 @@ int main (int argc, const char * argv[]) {
     for (k=i+1;k<end;k++)
       for (l=end;l<n;l++) 
         for (j=i;j<k;j++)
-          A[k*n+l]-=a*A[j*n+l];
+          A[k*n+l]-=A[k*n+j]*A[j*n+l];
     /*
     for (j=i;j<end;j++)
       for (k=j+1;k<end;k++) {
         for (l=end;l<n;l++) 
-            A[k*n+l]-=a*A[j*n+l];
+            A[k*n+l]-=A[k*n+j]*A[j*n+l];
       }
       */
     for (j=end;j<n;j+=B)
