@@ -78,13 +78,13 @@ int main (int argc, const char * argv[]) {
       for (k=i+1;k<n;k++)
         A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
     }
-    printf("LU after %d:\n\n", i+1);
-    for (k=0;k<n;k++) {
-      for (j=0;j<n;j++) {
-        printf("%f\t", A[k*n+j]);
-      }
-      printf("%d\n\n", pvt[k]);
+  }
+  printf("LU:\n\n", );
+  for (k=0;k<n;k++) {
+    for (j=0;j<n;j++) {
+      printf("%f\t", A[k*n+j]);
     }
+    printf("%d\n\n", pvt[k]);
   }
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
@@ -107,6 +107,13 @@ int main (int argc, const char * argv[]) {
   
   start=clock();
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
+  printf("LAPACK LU:\n\n");
+  for (i=0;i<n;i++) {
+    for (j=0;j<n;j++) {
+      printf("%f\t", A_bak[i*n+j]);
+    }
+    printf("%d\n\n", pvt[i]);
+  }
   for (i=n-1;i>-1;i--) {
     ipiv[i]--;
     if (ipiv[i]!=i) {
