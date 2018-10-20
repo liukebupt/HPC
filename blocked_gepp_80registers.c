@@ -43,7 +43,6 @@ int main (int argc, const char * argv[]) {
   int *pvt = (int *)malloc(sizeof(int)*n);
 
   clock_t start=clock();
-  register int n2=2*n, n3=3*n, n4=4*n, n5=5*n, n6=6*n, n7=7*n;
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n;i+=B) {
@@ -141,10 +140,9 @@ int main (int argc, const char * argv[]) {
             register double c70=A[p2], c71=A[p2+1], c72=A[p2+2], c73=A[p2+3];
             register double c74=A[p2+4], c75=A[p2+5], c76=A[p2+6], c77=A[p2+7];
             register int p3=p5+i; //j1*n+l
-            register int p6=p4+k1; //l*n+k1
             for (l=i;l<end;l++) {
-              register double a0=A[p3+l], a1=A[p3+n], a2=A[p3+n*2], a3=A[p3+n*3];
-              register double a4=A[p3+n*4], a5=A[p3+n*5], a6=A[p3+n*6], a7=A[p3+n*7];
+              register double a0=A[p3], a1=A[p3+n], a2=A[p3+2*n], a3=A[p3+3*n];
+              register double a4=A[p3+4*n], a5=A[p3+5*n], a6=A[p3+6*n], a7=A[p3+7*n];
               register double b0=A[l*n+k1], b1=A[l*n+k1+1], b2=A[l*n+k1+2], b3=A[l*n+k1+3];
               register double b4=A[l*n+k1+4], b5=A[l*n+k1+5], b6=A[l*n+k1+6], b7=A[l*n+k1+7];
               c00-=a0*b0;
@@ -212,7 +210,6 @@ int main (int argc, const char * argv[]) {
               c76-=a7*b6;
               c77-=a7*b7;
               p3+=1;
-              p6+=n;
             }
             A[p1]=c00;
             A[p1+1]=c01;
