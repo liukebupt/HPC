@@ -6,27 +6,30 @@
 #include <math.h>
 #include <string.h>
 
+#define drand() (double)rand()/RAND_MAX*(-2)+1 //return a random double number between -1 and 1.
+
 int main (int argc, const char * argv[]) {
 
-  int n=3;
-  bool test=true;
+  if (argc!=3) {
+    printf("Invalid input!\n");
+    return 0;
+  }
+  int n=atoi(argv[1]);
+  printf("n=%d. \n",n);
+ 
+  bool test=false;
+  if (argv[2][0]=='T')
+    test=true;
 
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
   int i, j, k;
-  A[0]=1;
-  A[1]=1;
-  A[2]=1;
-  A[3]=2;
-  A[4]=3;
-  A[5]=1;
-  A[6]=4;
-  A[7]=3;
-  A[8]=2;
-  b[0]=6;
-  b[1]=11;
-  b[2]=16;
+  for (i=0; i<n; i++) {
+    for (j=0; j<n; j++) 
+      A[i*n+j]=drand();
+    b[i]=drand();
+  }  
   memcpy(A_bak,A,sizeof(double)*n*n);
   
   int temps, maxind;
@@ -35,7 +38,16 @@ int main (int argc, const char * argv[]) {
   double *y = (double *)malloc(sizeof(double)*n);
   double *x = (double *)malloc(sizeof(double)*n);
   
+  
+  printf("input:\n\n");
+  for (i=0;i<n;i++) {
+    for (j=0;j<n;j++) {
+      printf("%f\t", A[i*n+j]);
+    }
+    printf("\n\n");
+  }
   clock_t start=clock();
+  
   int *pvt = (int *)malloc(sizeof(int)*n);
   for (i=0;i<n;i++)
     pvt[i]=i;
@@ -64,14 +76,15 @@ int main (int argc, const char * argv[]) {
     for (j=i+1;j<n;j++) {
       A[j*n+i]=A[j*n+i]/A[i*n+i];
       for (k=i+1;k<n;k++)
-        A[j*n+k]-=A[j*n+i]*A[i*n+k];
+        A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
     }
-  }
-  printf("LU:\n");
-  for (i=0;i<n;i++) {
-    for (j=0;j<n;j++) 
-      printf("%f ",A[i*n+j]);
-    printf("%d \n",pvt[i]);
+    printf("LU after %d:\n\n", i+1);
+    for (i=0;i<n;i++) {
+      for (j=0;j<n;j++) {
+        printf("%f\t", A[i*n+j]);
+      }
+      printf("%d\n\n", pvt[i]);
+    }
   }
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
@@ -80,10 +93,6 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
-  printf("My y:\n");
-  for (i=0;i<n;i++) 
-    printf("%f ",y[i]);
-  printf("\n");
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
@@ -91,10 +100,6 @@ int main (int argc, const char * argv[]) {
       sum+=x[j]*A[i*n+j];
     x[i]=(y[i]-sum)/A[i*n+i];
   }
-  printf("My result:\n");
-  for (i=0;i<n;i++) 
-    printf("%f ",x[i]);
-  printf("\n");
   printf("Cost %.2f seconds by my approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
   lapack_int *ipiv = (lapack_int *)malloc(n*sizeof(lapack_int));
@@ -102,12 +107,6 @@ int main (int argc, const char * argv[]) {
   
   start=clock();
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
-  printf("LU:\n");
-  for (i=0;i<n;i++) {
-    for (j=0;j<n;j++) 
-      printf("%f ",A[i*n+j]);
-    printf("\n");
-  }
   for (i=n-1;i>-1;i--) {
     ipiv[i]--;
     if (ipiv[i]!=i) {
@@ -117,15 +116,7 @@ int main (int argc, const char * argv[]) {
     }
   }
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
-  printf("LA y:\n");
-  for (i=0;i<n;i++) 
-    printf("%f ",b[i]);
-  printf("\n");
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
-  printf("LA result:\n");
-  for (i=0;i<n;i++) 
-    printf("%f ",b[i]);
-  printf("\n");
   printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
   if (test) {
@@ -135,7 +126,7 @@ int main (int argc, const char * argv[]) {
       if (cur_diff>max_diff)
         max_diff=cur_diff;
     }
-    printf("The maximum difference between LAPACKE's approach and mine is %f.\n", max_diff);
+    printf("The maximum difference between LAPACKE's approach and mine is %.16f.\n", max_diff);
   }
   
   printf("\n");
