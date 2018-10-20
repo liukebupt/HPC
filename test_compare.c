@@ -131,6 +131,10 @@ int main (int argc, const char * argv[]) {
       b[ipiv[i]]=temp;
     }
   }
+  printf("LAPACK b:\n\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", b[k]);
+  }
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
   printf("LAPACK y:\n\n");
   for (k=0;k<n;k++) {
