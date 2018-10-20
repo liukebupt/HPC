@@ -113,24 +113,31 @@ int main (int argc, const char * argv[]) {
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1+=8) {
-          register int p1=j1*n+k;
+          register int p1=j1*n+k;    //j1*n+k1
           for (k1=k;k1<k+B;k1+=8) {
             register double c00=A[p1], c01=A[p1+1], c02=A[p1+2], c03=A[p1+3];
-            register double c10=A[p1+n], c11=A[p1+1+n], c12=A[p1+2+n], c13=A[p1+3+n];
-            register double c20=A[p1+2*n], c21=A[p1+1+2*n], c22=A[p1+2+2*n], c23=A[p1+3+2*n];
-            register double c30=A[p1+3*n], c31=A[p1+1+3*n], c32=A[p1+2+3*n], c33=A[p1+3+3*n];
-            register double c40=A[p1+4*n], c41=A[p1+1+4*n], c42=A[p1+2+4*n], c43=A[p1+3+4*n];
-            register double c50=A[p1+5*n], c51=A[p1+1+5*n], c52=A[p1+2+5*n], c53=A[p1+3+5*n];
-            register double c60=A[p1+6*n], c61=A[p1+1+6*n], c62=A[p1+2+6*n], c63=A[p1+3+6*n];
-            register double c70=A[p1+7*n], c71=A[p1+1+7*n], c72=A[p1+2+7*n], c73=A[p1+3+7*n];
             register double c04=A[p1+4], c05=A[p1+5], c06=A[p1+6], c07=A[p1+7];
-            register double c14=A[p1+n+4], c15=A[p1+5+n], c16=A[p1+6+n], c17=A[p1+7+n];
-            register double c24=A[p1+2*n+4], c25=A[p1+5+2*n], c26=A[p1+6+2*n], c27=A[p1+7+2*n];
-            register double c34=A[p1+3*n+4], c35=A[p1+5+3*n], c36=A[p1+6+3*n], c37=A[p1+7+3*n];
-            register double c44=A[p1+4*n+4], c45=A[p1+5+4*n], c46=A[p1+6+4*n], c47=A[p1+7+4*n];
-            register double c54=A[p1+5*n+4], c55=A[p1+5+5*n], c56=A[p1+6+5*n], c57=A[p1+7+5*n];
-            register double c64=A[p1+6*n+4], c65=A[p1+5+6*n], c66=A[p1+6+6*n], c67=A[p1+7+6*n];
-            register double c74=A[p1+7*n+4], c75=A[p1+5+7*n], c76=A[p1+6+7*n], c77=A[p1+7+7*n];
+            register int p2=p1+n; //j1*n+k1+n
+            register double c10=A[p2], c11=A[p2+1], c12=A[p2+2], c13=A[p2+3];
+            register double c14=A[p2+4], c15=A[p2+5], c16=A[p2+6], c17=A[p2+7];
+            p2+=n;   //j1*n+k1+2*n
+            register double c20=A[p2], c21=A[p2+1], c22=A[p2+2], c23=A[p2+3];
+            register double c24=A[p2+4], c25=A[p2+5], c26=A[p2+6], c27=A[p2+7];
+            p2+=n;   //j1*n+k1+3*n
+            register double c30=A[p2], c31=A[p2+1], c32=A[p2+2], c33=A[p2+3];
+            register double c34=A[p2+4], c35=A[p2+5], c36=A[p2+6], c37=A[p2+7];
+            p2+=n;   //j1*n+k1+4*n
+            register double c40=A[p2], c41=A[p2+1], c42=A[p2+2], c43=A[p2+3];
+            register double c44=A[p2+4], c45=A[p2+5], c46=A[p2+6], c47=A[p2+7];
+            p2+=n;   //j1*n+k1+5*n
+            register double c50=A[p2], c51=A[p2+1], c52=A[p2+2], c53=A[p2+3];
+            register double c54=A[p2+4], c55=A[p2+5], c56=A[p2+6], c57=A[p2+7];
+            p2+=n;   //j1*n+k1+6*n
+            register double c60=A[p2], c61=A[p2+1], c62=A[p2+2], c63=A[p2+3];
+            register double c64=A[p2+4], c65=A[p2+5], c66=A[p2+6], c67=A[p2+7];
+            p2+=n;   //j1*n+k1+7*n
+            register double c70=A[p2], c71=A[p2+1], c72=A[p2+2], c73=A[p2+3];
+            register double c74=A[p2+4], c75=A[p2+5], c76=A[p2+6], c77=A[p2+7];
             for (l=i;l<end;l++) {
               register double a0=A[j1*n+l], a1=A[j1*n+l+n], a2=A[j1*n+l+2*n], a3=A[j1*n+l+3*n];
               register double a4=A[j1*n+l+4*n], a5=A[j1*n+l+5*n], a6=A[j1*n+l+6*n], a7=A[j1*n+l+7*n];
