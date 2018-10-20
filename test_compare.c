@@ -123,7 +123,7 @@ int main (int argc, const char * argv[]) {
     }
     printf("%d\n\n", pvt[i]);
   }
-  for (i=n-1;i>-1;i--) {
+  for (i=0;i<n;i--) {
     ipiv[i]--;
     if (ipiv[i]!=i) {
       temp=b[i];
