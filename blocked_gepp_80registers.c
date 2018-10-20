@@ -44,6 +44,7 @@ int main (int argc, const char * argv[]) {
 
   clock_t start=clock();
   register int n2=2*n, n3=3*n, n4=4*n, n5=5*n, n6=6*n, n7=7*n;
+  register int rowsize=sizeof(double)*n;
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n;i+=B) {
@@ -72,9 +73,10 @@ int main (int argc, const char * argv[]) {
           temps=pvt[j];
           pvt[j]=pvt[maxind];
           pvt[maxind]=temps;
-          memcpy(tempv,&A[j*n],sizeof(double)*n);
-          memcpy(&A[j*n],&A[maxind*n],sizeof(double)*n);
-          memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
+          register int jn=j*n, maxindn=maxind*n;
+          memcpy(tempv,&A[jn],rowsize);
+          memcpy(&A[jn],&A[maxindn],rowsize);
+          memcpy(&A[maxindn],tempv,rowsize); 
         }
       }
       p=j*n+j;
@@ -111,7 +113,6 @@ int main (int argc, const char * argv[]) {
         A[p]=a;
       }
     }
-    register int p6=i*n;   //i*n
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1+=8) {
@@ -142,12 +143,12 @@ int main (int argc, const char * argv[]) {
             register double c70=A[p2], c71=A[p2+1], c72=A[p2+2], c73=A[p2+3];
             register double c74=A[p2+4], c75=A[p2+5], c76=A[p2+6], c77=A[p2+7];
             register int p3=p5+i;   //j1*n+l
-            register int p4=p6+k1;   //l*n+k1
+            register int p6=p4+k1;   //l*n+k1
             for (l=i;l<end;l++) {
               register double a0=A[p3+l], a1=A[p3+n], a2=A[p3+n2], a3=A[p3+n3];
               register double a4=A[p3+n4], a5=A[p3+n5], a6=A[p3+n6], a7=A[p3+n7];
-              register double b0=A[p4], b1=A[p4+1], b2=A[p4+2], b3=A[p4+3];
-              register double b4=A[p4+4], b5=A[p4+5], b6=A[p4+6], b7=A[p4+7];
+              register double b0=A[p6], b1=A[p6+1], b2=A[p6+2], b3=A[p6+3];
+              register double b4=A[p6+4], b5=A[p6+5], b6=A[p6+6], b7=A[p6+7];
               c00-=a0*b0;
               c01-=a0*b1;
               c02-=a0*b2;
@@ -329,6 +330,7 @@ int main (int argc, const char * argv[]) {
         max_diff=cur_diff;
     }
     printf("max relative difference is %.16f.\n", max_diff);
+    printf("%f, %f\n", b[100], x[100]);
     free(ipiv);
   }
   
