@@ -44,7 +44,7 @@ int main (int argc, const char * argv[]) {
     for (j=0;j<n;j++) {
       printf("%f\t", A[i*n+j]);
     }
-    printf("\n\n");
+    printf("%f\n\n", b[i]);
   }
   clock_t start=clock();
   
