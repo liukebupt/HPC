@@ -85,9 +85,16 @@ int main (int argc, const char * argv[]) {
           for (k1=k;k1<k+B;k1+=4) {
             register double c00=A[j1*n+k1], c01=A[j1*n+k1+1], c02=A[j1*n+k1+2], c03=A[j1*n+k1+3];
             register double c10=A[j1*n+k1+n], c11=A[j1*n+k1+1+n], c12=A[j1*n+k1+2+n], c13=A[j1*n+k1+3+n];
+            register double c20=A[j1*n+k1+2*n], c21=A[j1*n+k1+1+2*n], c22=A[j1*n+k1+2+2*n], c23=A[j1*n+k1+3+2*n];
+            register double c30=A[j1*n+k1+3*n], c31=A[j1*n+k1+1+3*n], c32=A[j1*n+k1+2+3*n], c33=A[j1*n+k1+3+3*n];
+            register double c40=A[j1*n+k1+4*n], c41=A[j1*n+k1+1+4*n], c42=A[j1*n+k1+2+4*n], c43=A[j1*n+k1+3+4*n];
+            register double c50=A[j1*n+k1+5*n], c51=A[j1*n+k1+1+5*n], c52=A[j1*n+k1+2+5*n], c53=A[j1*n+k1+3+5*n];
+            register double c60=A[j1*n+k1+6*n], c61=A[j1*n+k1+1+6*n], c62=A[j1*n+k1+2+6*n], c63=A[j1*n+k1+3+6*n];
+            register double c70=A[j1*n+k1+7*n], c71=A[j1*n+k1+1+7*n], c72=A[j1*n+k1+2+7*n], c73=A[j1*n+k1+3+7*n];
             for (l=i;l<end;l++) {
-              register double a0=A[j1*n+l], a1=A[j1*n+l+n], b0=A[l*n+k1], b1=A[l*n+k1+1];
-              register double b2=A[l*n+k1+2], b3=A[l*n+k1+3];
+              register double a0=A[j1*n+l], a1=A[j1*n+l+n], a2=A[j1*n+l+2*n], a3=A[j1*n+l+3*n];
+              register double a4=A[j1*n+l+4*n], a5=A[j1*n+l+5*n], a6=A[j1*n+l+6*n], a7=A[j1*n+l+7*n];
+              register double b0=A[l*n+k1], b1=A[l*n+k1+1], b2=A[l*n+k1+2], b3=A[l*n+k1+3];
               c00-=a0*b0;
               c01-=a0*b1;
               c02-=a0*b2;
@@ -96,6 +103,30 @@ int main (int argc, const char * argv[]) {
               c11-=a1*b1;
               c12-=a1*b2;
               c13-=a1*b3;
+              c20-=a2*b0;
+              c21-=a2*b1;
+              c22-=a2*b2;
+              c23-=a2*b3;
+              c30-=a3*b0;
+              c31-=a3*b1;
+              c32-=a3*b2;
+              c33-=a3*b3;
+              c40-=a4*b0;
+              c41-=a4*b1;
+              c42-=a4*b2;
+              c43-=a4*b3;
+              c50-=a5*b0;
+              c51-=a5*b1;
+              c52-=a5*b2;
+              c53-=a5*b3;
+              c60-=a6*b0;
+              c61-=a6*b1;
+              c62-=a6*b2;
+              c63-=a6*b3;
+              c70-=a7*b0;
+              c71-=a7*b1;
+              c72-=a7*b2;
+              c73-=a7*b3;
             }
             A[j1*n+k1]=c00;
             A[j1*n+k1+1]=c01;
@@ -105,6 +136,30 @@ int main (int argc, const char * argv[]) {
             A[j1*n+k1+n+1]=c11;
             A[j1*n+k1+n+2]=c12;
             A[j1*n+k1+n+3]=c13;
+            A[j1*n+k1+2*n]=c20;
+            A[j1*n+k1+2*n+1]=c21;
+            A[j1*n+k1+2*n+2]=c22;
+            A[j1*n+k1+2*n+3]=c23;
+            A[j1*n+k1+3*n]=c30;
+            A[j1*n+k1+3*n+1]=c31;
+            A[j1*n+k1+3*n+2]=c32;
+            A[j1*n+k1+3*n+3]=c33;
+            A[j1*n+k1+4*n]=c40;
+            A[j1*n+k1+4*n+1]=c41;
+            A[j1*n+k1+4*n+2]=c42;
+            A[j1*n+k1+4*n+3]=c43;
+            A[j1*n+k1+5*n]=c50;
+            A[j1*n+k1+5*n+1]=c51;
+            A[j1*n+k1+5*n+2]=c52;
+            A[j1*n+k1+5*n+3]=c53;
+            A[j1*n+k1+6*n]=c60;
+            A[j1*n+k1+6*n+1]=c61;
+            A[j1*n+k1+6*n+2]=c62;
+            A[j1*n+k1+6*n+3]=c63;
+            A[j1*n+k1+7*n]=c70;
+            A[j1*n+k1+7*n+1]=c71;
+            A[j1*n+k1+7*n+2]=c72;
+            A[j1*n+k1+7*n+3]=c73;
           }
   }
   y[0]=b[pvt[0]];
