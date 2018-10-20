@@ -92,10 +92,24 @@ int main (int argc, const char * argv[]) {
         }
       }
     }
-    for (j=i;j<end;j++)
-      for (k=j+1;k<end;k++)
-        for (l=end;l<n;l++)
-          A[k*n+l]-=A[k*n+j]*A[j*n+l];
+    register int p4=i*n;
+    for (l=end;l<n;l++) {
+      register int p=p4+l;         //k*n+l
+      register int p1=p4+i;         //k*n+i
+      for (k=i+1;k<end;k++) {
+        p1+=n;
+        p+=n;
+        register double a=A[p];
+        register int p2=p1;     //k*n+j
+        register int p3=p4+l;     //j*n+l
+        for (j=i;j<k;j++) {
+          a-=A[p2]*A[p3];
+          p2+=1;
+          p3+=n;
+        }
+        A[p]=a;
+      }
+    }
     for (j=end;j<n;j+=B)
       for (k=end;k<n;k+=B)
         for (j1=j;j1<j+B;j1+=8)
