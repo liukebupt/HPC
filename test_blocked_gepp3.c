@@ -26,6 +26,7 @@ int main (int argc, const char * argv[]) {
   double *A=(double *)malloc(sizeof(double)*n*n);
   double *b=(double *)malloc(sizeof(double)*n);
   double *A_bak=(double *)malloc(sizeof(double)*n*n);
+  double *b_bak=(double *)malloc(sizeof(double)*n);
   int i, j, k, l, j1, k1;
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) 
@@ -33,6 +34,7 @@ int main (int argc, const char * argv[]) {
     b[i]=drand(); 
   }
   memcpy(A_bak,A,sizeof(double)*n*n);
+  memcpy(b_bak,b,sizeof(double)*n);
   
   int temps, maxind, end;
   double max, sum;
@@ -114,11 +116,13 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
+  /*
   printf("blocked y:\n");
   for (k=0;k<n;k++) {
     printf("%f\t", y[k]);
   }
   printf("\n");
+  */
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
@@ -126,11 +130,39 @@ int main (int argc, const char * argv[]) {
       sum+=x[j]*A[i*n+j];
     x[i]=(y[i]-sum)/A[i*n+i];
   }
+  /*
   printf("blocked x:\n");
   for (k=0;k<n;k++) {
     printf("%f\t", x[k]);
   }
   printf("\n");
+  */
+  lapack_int *ipiv = (lapack_int *)malloc(n*sizeof(lapack_int));
+  double temp;
+  
+  start=clock();
+  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
+  for (i=n-1;i>-1;i--) {
+    ipiv[i]--;
+    if (ipiv[i]!=i) {
+      temp=b[i];
+      b[i]=b[ipiv[i]];
+      b[ipiv[i]]=temp;
+    }
+  }
+  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b_bak, 1);
+  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b_bak, 1);
+  printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
+  
+  if (test) {
+    double max_diff=0, cur_diff;
+    for (i=0;i<n;i++) {
+      cur_diff=fabs(x[i]-b[i]);
+      if (cur_diff>max_diff)
+        max_diff=cur_diff;
+    }
+    printf("The maximum difference between LAPACKE's approach and mine is %.16f.\n", max_diff);
+  }
   
   memcpy(A,A_bak,sizeof(double)*n*n);
   
@@ -188,11 +220,13 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
+  /*
   printf("simple y:\n");
   for (k=0;k<n;k++) {
     printf("%f\t", y[k]);
   }
   printf("\n");
+  */
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
@@ -200,11 +234,22 @@ int main (int argc, const char * argv[]) {
       sum+=x[j]*A[i*n+j];
     x[i]=(y[i]-sum)/A[i*n+i];
   }
+  /*
   printf("simple x:\n");
   for (k=0;k<n;k++) {
     printf("%f\t", x[k]);
   }
   printf("\n");
+  */
+  if (test) {
+    double max_diff=0, cur_diff;
+    for (i=0;i<n;i++) {
+      cur_diff=fabs(x[i]-b[i]);
+      if (cur_diff>max_diff)
+        max_diff=cur_diff;
+    }
+    printf("The maximum difference between LAPACKE's approach and mine is %.16f.\n", max_diff);
+  }
   
   free(A_bak);
   free(A);
