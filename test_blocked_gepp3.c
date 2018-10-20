@@ -45,15 +45,15 @@ int main (int argc, const char * argv[]) {
   int *pvt = (int *)malloc(sizeof(int)*n);
 
   clock_t start=clock();
-  ///*
-  printf("Blocked input:\n\n");
+  /*
+  printf("Blocked input:\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
       printf("%f\t", A[i*n+j]);
     }
-    printf("\n\n");
+    printf("\n");
   }
-  //*/
+  */
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n;i+=B) {
@@ -100,20 +100,23 @@ int main (int argc, const char * argv[]) {
             A[j1*n+k1]=a;
           }
   }
-  ///*
-  printf("Blocked LU:\n\n");
+  /*
+  printf("Blocked LU:\n");
    for (i=0;i<n;i++) {
      for (j=0;j<n;j++) {
        printf("%f\t", A[i*n+j]);
      }
-     printf("%d\n\n", pvt[i]);
+     printf("%d\n", pvt[i]);
   }
-  //*/
+  */
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
     sum=0;
-    for (j=0;j<i;j++)
-      sum+=y[j]*A[i*n+j];
+    register int p1=i*n;   //i*n+j
+    for (j=0;j<i;j++) {
+      sum+=y[j]*A[p1];
+      p1+=1;
+    }
     y[i]=b[pvt[i]]-sum;
   }
   /*
@@ -142,6 +145,7 @@ int main (int argc, const char * argv[]) {
   
   start=clock();
   memcpy(A,A_bak,sizeof(double)*n*n);
+/*
   printf("LAPACK input:\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
@@ -149,15 +153,18 @@ int main (int argc, const char * argv[]) {
     }
     printf("%f\n", b_bak[i]);
   }
+*/
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A, n, ipiv);
-  printf("LAPACK LU:\n\n");
+/*
+  printf("LAPACK LU:\n");
    for (i=0;i<n;i++) {
      for (j=0;j<n;j++) {
        printf("%f\t", A[i*n+j]);
      }
-     printf("%d\n\n", ipiv[i]);
+     printf("%d\n", ipiv[i]);
   }
-  for (i=n-1;i>-1;i--) {
+*/
+  for (i=0;i<n;i++) {
     ipiv[i]--;
     if (ipiv[i]!=i) {
       temp=b_bak[i];
