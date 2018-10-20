@@ -91,12 +91,13 @@ int main (int argc, const char * argv[]) {
   
   start=clock();
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
-  for (i=0;i<n;i++) {
-    ipiv[i]--;
-    if (ipiv[i]!=i) {
-      temp=b[i];
-      b[i]=b[ipiv[i]];
-      b[ipiv[i]]=temp;
+  register int pi;
+  for (pi=0;pi<n;pi++) {
+    register int p=ipiv[pi]-1;
+    if (p!=pi) {
+      temp=b[pi];
+      b[pi]=b[p];
+      b[p]=temp;
     }
   }
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
@@ -106,11 +107,11 @@ int main (int argc, const char * argv[]) {
   if (test) {
     double max_diff=0, cur_diff;
     for (i=0;i<n;i++) {
-      cur_diff=fabs(x[i]-b[i]);
+      cur_diff=fabs((x[i]-b[i])/b[i]);
       if (cur_diff>max_diff)
         max_diff=cur_diff;
     }
-    printf("The maximum difference between LAPACKE's approach and mine is %.16f.\n", max_diff);
+    printf("The maximum relative difference between LAPACKE's approach and mine is %.16f.\n", max_diff);
   }
   
   printf("\n");
