@@ -79,11 +79,11 @@ int main (int argc, const char * argv[]) {
         A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
     }
     printf("LU after %d:\n\n", i+1);
-    for (i=0;i<n;i++) {
+    for (k=0;k<n;k++) {
       for (j=0;j<n;j++) {
-        printf("%f\t", A[i*n+j]);
+        printf("%f\t", A[k*n+j]);
       }
-      printf("%d\n\n", pvt[i]);
+      printf("%d\n\n", pvt[k]);
     }
   }
   y[0]=b[pvt[0]];
