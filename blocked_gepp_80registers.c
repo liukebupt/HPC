@@ -49,13 +49,13 @@ int main (int argc, const char * argv[]) {
     end=i+B;
     for (j=i;j<end;j++) {
       maxind=j;
-      register int p=j*n+j;
+      register int p=j*n+j;  //k*n+j
       max=A[p];
       if (max<0)
         max*=(-1);
       for (k=j+1;k<n;k++) {
         p+=n;
-        register double abs=A[p];
+        register double abs=A[p];  //abs(A[k*n+j])
         if (abs<0)
           abs*=(-1);
         if (abs>max) {
@@ -76,10 +76,20 @@ int main (int argc, const char * argv[]) {
           memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
         }
       }
+      p=j*n+j;
+      register int p1=p;       //k*n+j
+      register double a1=A[p1];
       for (k=j+1;k<n;k++) {
-        A[k*n+j]=A[k*n+j]/A[j*n+j];
-        for (l=j+1;l<end;l++)
-          A[k*n+l]=A[k*n+l]-A[k*n+j]*A[j*n+l];
+        p1+=n;
+        A[p1]/=a1;
+        register double a=A[p1];
+        register int p2=p1;        //k*n+l
+        register int p3=p;     //j*n+l
+        for (l=j+1;l<end;l++) {
+          p3+=1;
+          p2+=1;
+          A[p2]-=a*A[p3];
+        }
       }
     }
     for (j=i;j<end;j++)
