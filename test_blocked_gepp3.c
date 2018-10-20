@@ -129,8 +129,11 @@ int main (int argc, const char * argv[]) {
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
-    for (j=i+1;j<n;j++)
-      sum+=x[j]*A[i*n+j];
+    register int p1=i*n+i;   //i*n+j
+    for (j=i+1;j<n;j++) {
+      p1+=1;
+      sum+=x[j]*A[p1];
+    }
     x[i]=(y[i]-sum)/A[i*n+i];
   }
   /*
