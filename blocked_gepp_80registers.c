@@ -50,12 +50,17 @@ int main (int argc, const char * argv[]) {
     for (j=i;j<end;j++) {
       maxind=j;
       register int p=j*n+j;
-      max=fabs(A[p]);
+      max=A[p];
+      if (max<0)
+        max*=(-1);
       for (k=j+1;k<n;k++) {
         p+=n;
-        if (fabs(A[p])>max) {
+        register double abs=A[p];
+        if (abs<0)
+          abs*=(-1);
+        if (abs>max) {
           maxind = k;
-          max = fabs(A[p]);
+          max = abs;
         }
       }
       if (max==0) {
