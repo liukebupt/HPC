@@ -294,15 +294,21 @@ int main (int argc, const char * argv[]) {
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
     sum=0;
-    for (j=0;j<i;j++)
-      sum+=y[j]*A[i*n+j];
+    register int p1=i*n;   //i*n+j
+    for (j=0;j<i;j++) {
+      sum+=y[j]*A[p1];
+      p1+=1;
+    }
     y[i]=b[pvt[i]]-sum;
   }
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
-    for (j=i+1;j<n;j++)
-      sum+=x[j]*A[i*n+j];
+    register int p1=i*n+i;   //i*n+j
+    for (j=i+1;j<n;j++) {
+      p1+=1;
+      sum+=x[j]*A[p1];
+    }
     x[i]=(y[i]-sum)/A[i*n+i];
   }
   printf("Cost %.2f seconds by my approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
