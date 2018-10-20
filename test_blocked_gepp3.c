@@ -98,6 +98,7 @@ int main (int argc, const char * argv[]) {
             A[j1*n+k1]=a;
           }
   }
+  /*
   printf("Blocked LU:\n\n");
    for (i=0;i<n;i++) {
      for (j=0;j<n;j++) {
@@ -105,6 +106,7 @@ int main (int argc, const char * argv[]) {
      }
      printf("%d\n\n", pvt[i]);
   }
+  */
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
     sum=0;
@@ -112,14 +114,26 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
-  printf("blocked y:\n\n");
+  printf("blocked y:\n");
   for (k=0;k<n;k++) {
     printf("%f\t", y[k]);
   }
-  printf("\n\n");
+  printf("\n");
+  x[n-1]=y[n-1]/A[(n-1)*n+n-1];
+  for (i=n-1;i>-1;i--) {
+    sum=0;
+    for (j=i+1;j<n;j++)
+      sum+=x[j]*A[i*n+j];
+    x[i]=(y[i]-sum)/A[i*n+i];
+  }
+  printf("blocked x:\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", x[k]);
+  }
+  printf("\n");
   
   memcpy(A,A_bak,sizeof(double)*n*n);
-  /*
+  
   printf("Simple LU input:\n\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
@@ -127,7 +141,7 @@ int main (int argc, const char * argv[]) {
     }
     printf("\n\n");
   }
-  */
+  
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n-1;i++) {
@@ -148,7 +162,7 @@ int main (int argc, const char * argv[]) {
         pvt[i]=pvt[maxind];
         pvt[maxind]=temps;
         memcpy(tempv,&A[i*n],sizeof(double)*n);
-        memcpy(&A[i*n],&A[maxind],sizeof(double)*n);
+        memcpy(&A[i*n],&A[maxind*n],sizeof(double)*n);
         memcpy(&A[maxind*n],tempv,sizeof(double)*n); 
       }
     }
@@ -158,6 +172,7 @@ int main (int argc, const char * argv[]) {
         A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
     }
   }
+  /*
   printf("Simple LU:\n\n");
    for (i=0;i<n;i++) {
      for (j=0;j<n;j++) {
@@ -165,6 +180,7 @@ int main (int argc, const char * argv[]) {
      }
      printf("%d\n\n", pvt[i]);
   }
+  */
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
     sum=0;
@@ -172,11 +188,23 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
-  printf("simple y:\n\n");
+  printf("simple y:\n");
   for (k=0;k<n;k++) {
     printf("%f\t", y[k]);
   }
-  printf("\n\n");
+  printf("\n");
+  x[n-1]=y[n-1]/A[(n-1)*n+n-1];
+  for (i=n-1;i>-1;i--) {
+    sum=0;
+    for (j=i+1;j<n;j++)
+      sum+=x[j]*A[i*n+j];
+    x[i]=(y[i]-sum)/A[i*n+i];
+  }
+  printf("simple x:\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", x[k]);
+  }
+  printf("\n");
   
   free(A_bak);
   free(A);
