@@ -105,6 +105,10 @@ int main (int argc, const char * argv[]) {
       sum+=x[j]*A[i*n+j];
     x[i]=(y[i]-sum)/A[i*n+i];
   }
+  printf("x:\n\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", x[k]);
+  }
   printf("Cost %.2f seconds by my approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
   lapack_int *ipiv = (lapack_int *)malloc(n*sizeof(lapack_int));
@@ -134,6 +138,10 @@ int main (int argc, const char * argv[]) {
   }
   printf("\n\n");
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
+  printf("LAPACK x:\n\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", b[k]);
+  }
   printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
   if (test) {
