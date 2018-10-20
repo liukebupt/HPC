@@ -91,7 +91,7 @@ int main (int argc, const char * argv[]) {
   
   start=clock();
   LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
-  for (i=n-1;i>-1;i--) {
+  for (i=0;i<n;i++) {
     ipiv[i]--;
     if (ipiv[i]!=i) {
       temp=b[i];
