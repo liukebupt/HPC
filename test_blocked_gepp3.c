@@ -43,6 +43,13 @@ int main (int argc, const char * argv[]) {
   int *pvt = (int *)malloc(sizeof(int)*n);
 
   clock_t start=clock();
+  printf("Blocked LU input:\n\n");
+  for (i=0;i<n;i++) {
+    for (j=0;j<n;j++) {
+      printf("%f\t", A[i*n+j]);
+    }
+    printf("\n\n");
+  }
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n;i+=B) {
@@ -98,6 +105,13 @@ int main (int argc, const char * argv[]) {
   }
   
   memcpy(A,A_bak,sizeof(double)*n*n);
+  printf("Simple LU input:\n\n");
+  for (i=0;i<n;i++) {
+    for (j=0;j<n;j++) {
+      printf("%f\t", A[i*n+j]);
+    }
+    printf("\n\n");
+  }
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n-1;i++) {
