@@ -45,15 +45,15 @@ int main (int argc, const char * argv[]) {
   int *pvt = (int *)malloc(sizeof(int)*n);
 
   clock_t start=clock();
-  /*
-  printf("Blocked LU input:\n\n");
+  ///*
+  printf("Blocked input:\n\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
       printf("%f\t", A[i*n+j]);
     }
     printf("\n\n");
   }
-  */
+  //*/
   for (i=0;i<n;i++)
     pvt[i]=i;
   for (i=0;i<n;i+=B) {
@@ -100,7 +100,7 @@ int main (int argc, const char * argv[]) {
             A[j1*n+k1]=a;
           }
   }
-  /*
+  ///*
   printf("Blocked LU:\n\n");
    for (i=0;i<n;i++) {
      for (j=0;j<n;j++) {
@@ -108,7 +108,7 @@ int main (int argc, const char * argv[]) {
      }
      printf("%d\n\n", pvt[i]);
   }
-  */
+  //*/
   y[0]=b[pvt[0]];
   for (i=1;i<n;i++) {
     sum=0;
@@ -141,23 +141,38 @@ int main (int argc, const char * argv[]) {
   double temp;
   
   start=clock();
-  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A_bak, n, ipiv);
+  memcpy(A,A_bak,sizeof(double)*n*n);
+  printf("LAPACK input:\n");
+  for (i=0;i<n;i++) {
+    for (j=0;j<n;j++) {
+      printf("%f\t", A[i*n+j]);
+    }
+    printf("%f\n", b_bak[i]);
+  }
+  LAPACKE_dgetrf(LAPACK_ROW_MAJOR, n, n, A, n, ipiv);
+  printf("LAPACK LU:\n\n");
+   for (i=0;i<n;i++) {
+     for (j=0;j<n;j++) {
+       printf("%f\t", A[i*n+j]);
+     }
+     printf("%d\n\n", ipiv[i]);
+  }
   for (i=n-1;i>-1;i--) {
     ipiv[i]--;
     if (ipiv[i]!=i) {
-      temp=b[i];
-      b[i]=b[ipiv[i]];
-      b[ipiv[i]]=temp;
+      temp=b_bak[i];
+      b_bak[i]=b_bak[ipiv[i]];
+      b_bak[ipiv[i]]=temp;
     }
   }
-  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b_bak, 1);
-  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b_bak, 1);
-  printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
+  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A, n, b_bak, 1);
+  cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A, n, b_bak, 1);
+  //printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
   if (test) {
     double max_diff=0, cur_diff;
     for (i=0;i<n;i++) {
-      cur_diff=fabs(x[i]-b[i]);
+      cur_diff=fabs(x[i]-b_bak[i]);
       if (cur_diff>max_diff)
         max_diff=cur_diff;
     }
@@ -165,7 +180,7 @@ int main (int argc, const char * argv[]) {
   }
   
   memcpy(A,A_bak,sizeof(double)*n*n);
-  
+  /*
   printf("Simple LU input:\n\n");
   for (i=0;i<n;i++) {
     for (j=0;j<n;j++) {
@@ -173,6 +188,7 @@ int main (int argc, const char * argv[]) {
     }
     printf("\n\n");
   }
+  */
   
   for (i=0;i<n;i++)
     pvt[i]=i;
@@ -244,7 +260,7 @@ int main (int argc, const char * argv[]) {
   if (test) {
     double max_diff=0, cur_diff;
     for (i=0;i<n;i++) {
-      cur_diff=fabs(x[i]-b[i]);
+      cur_diff=fabs(x[i]-b_bak[i]);
       if (cur_diff>max_diff)
         max_diff=cur_diff;
     }
