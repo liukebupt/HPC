@@ -96,13 +96,18 @@ int main (int argc, const char * argv[]) {
             A[j1*n+k1]=a;
           }
   }
-  printf("Blocked LU:\n\n");
-  for (i=0;i<n;i++) {
-    for (j=0;j<n;j++) {
-      printf("%f\t", A[i*n+j]);
-    }
-    printf("%d\n\n", pvt[i]);
+  y[0]=b[pvt[0]];
+  for (i=1;i<n;i++) {
+    sum=0;
+    for (j=0;j<i;j++)
+      sum+=y[j]*A[i*n+j];
+    y[i]=b[pvt[i]]-sum;
   }
+  printf("blocked y:\n\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", y[k]);
+  }
+  printf("\n\n");
   
   memcpy(A,A_bak,sizeof(double)*n*n);
   printf("Simple LU input:\n\n");
@@ -142,13 +147,18 @@ int main (int argc, const char * argv[]) {
         A[j*n+k]=A[j*n+k]-A[j*n+i]*A[i*n+k];
     }
   }
-  printf("Simple LU:\n\n");
-  for (i=0;i<n;i++) {
-    for (j=0;j<n;j++) {
-      printf("%f\t", A[i*n+j]);
-    }
-    printf("%d\n\n", pvt[i]);
+  y[0]=b[pvt[0]];
+  for (i=1;i<n;i++) {
+    sum=0;
+    for (j=0;j<i;j++)
+      sum+=y[j]*A[i*n+j];
+    y[i]=b[pvt[i]]-sum;
   }
+  printf("simple y:\n\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", y[k]);
+  }
+  printf("\n\n");
   
   free(A_bak);
   free(A);
