@@ -49,11 +49,13 @@ int main (int argc, const char * argv[]) {
     end=i+B;
     for (j=i;j<end;j++) {
       maxind=j;
-      max=fabs(A[j*n+j]);
+      register int p=j*n+j;
+      max=fabs(A[p]);
       for (k=j+1;k<n;k++) {
-        if (fabs(A[k*n+j])>max) {
+        p+=n;
+        if (fabs(A[p])>max) {
           maxind = k;
-          max = fabs(A[k*n+j]);
+          max = fabs(A[p]);
         }
       }
       if (max==0) {
