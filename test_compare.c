@@ -93,6 +93,11 @@ int main (int argc, const char * argv[]) {
       sum+=y[j]*A[i*n+j];
     y[i]=b[pvt[i]]-sum;
   }
+  printf("y:\n\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", y[k]);
+  }
+  printf("\n\n");
   x[n-1]=y[n-1]/A[(n-1)*n+n-1];
   for (i=n-1;i>-1;i--) {
     sum=0;
@@ -123,6 +128,11 @@ int main (int argc, const char * argv[]) {
     }
   }
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasLower, CblasNoTrans, CblasUnit, n, 1, 1, A_bak, n, b, 1);
+  printf("LAPACK y:\n\n");
+  for (k=0;k<n;k++) {
+    printf("%f\t", b[k]);
+  }
+  printf("\n\n");
   cblas_dtrsm(CblasRowMajor, CblasLeft, CblasUpper, CblasNoTrans, CblasNonUnit, n, 1, 1, A_bak, n, b, 1);
   printf("Cost %.2f seconds by LAPACKE's approach.\n",(double)(clock()-start)/CLOCKS_PER_SEC);
   
