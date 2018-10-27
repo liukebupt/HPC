@@ -1,11 +1,15 @@
 #include <mpi.h>
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "MyMPI.h"
 #define MIN(a,b)  ((a)<(b)?(a):(b))
 
 int main (int argc, char *argv[])
 {
+   int id, p, n, low_value, high_value, size, proc0_size, i, index, prime, first, count, global_count;
+   char *marked;
+   double elapsed_time;
    MPI_Init (&argc, &argv);
    MPI_Barrier(MPI_COMM_WORLD);
    elapsed_time = -MPI_Wtime();
