@@ -8,7 +8,7 @@
 int main (int argc, char *argv[])                                                                 
 {                                                                                                 
    long long int n, low_value, high_value, size, proc0_size, i, first, prime;                     
-   int id, p, index, count, global_count, j;                                                         
+   int id, p, count, global_count, j;                                                         
    char *marked, *pend;                                                                           
    double elapsed_time;                                                                           
    MPI_Init (&argc, &argv);                                                                       
@@ -52,7 +52,6 @@ int main (int argc, char *argv[])
       exit (1);                                                                                   
    }                                                                                              
    for (i = 0; i < size; i++) marked[i] = 0;        
-   if (!id) index = 0;    
    for (j = 0; j < psize; j++) {
       if (!primes[j]) {
          prime = 2*j + 3; 
