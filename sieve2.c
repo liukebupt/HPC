@@ -8,7 +8,7 @@
 int main (int argc, char *argv[])                                                                 
 {                                                                                                 
    long long int n, low_value, high_value, size, proc0_size, i, first, prime;                     
-   int id, p, index, count, global_count;                                                         
+   int id, p, index, count, global_count, j;                                                         
    char *marked, *pend;                                                                           
    double elapsed_time;                                                                           
    MPI_Init (&argc, &argv);                                                                       
