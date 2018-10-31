@@ -8,7 +8,7 @@
 int main (int argc, char *argv[])                                                                 
 {                                                                                                 
    long long int n, low_value, high_value, size, proc0_size, i, first, prime;                     
-   int id, p, count, global_count, j;                                                         
+   int id, p, index, count, global_count, j;                                                         
    char *marked, *pend;                                                                           
    double elapsed_time;                                                                           
    MPI_Init (&argc, &argv);                                                                       
@@ -36,6 +36,7 @@ int main (int argc, char *argv[])
    int psize=sqn/2-1;
    char *primes = (char *) malloc (psize); 
    for (i = 0; i < psize; i++) primes[i] = 0;  
+   index = 0;
    prime = 3;                                                                                     
    do {                                                                                           
       first = (prime * prime - 3)/2;
