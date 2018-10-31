@@ -34,7 +34,7 @@ int main (int argc, char *argv[])
    
    int sqn=sqrt(n);
    int psize=sqn/2-1;
-   primes = (char *) malloc (psize); 
+   char *primes = (char *) malloc (psize); 
    for (i = 0; i < psize; i++) primes[i] = 0;  
    prime = 3;                                                                                     
    do {                                                                                           
