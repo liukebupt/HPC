@@ -7,7 +7,7 @@
 
 int main (int argc, char *argv[])  
 {      
-  long long int n, low_value, high_value, Bhigh_value, size, proc0_size, i, first, prime;
+  long long int n, low_value, high_value, Bsize, size, proc0_size, i, first, prime;
   int id, p, index, count, global_count, j, B, k; 
   char *marked, *pend;     
   double elapsed_time;     
@@ -66,7 +66,7 @@ int main (int argc, char *argv[])
   
   for (k=0;k<size;k+=B) {
     low_value = 3 + 2*(BLOCK_LOW(id,p,n/2-1)+k);
-    Bhigh_value = MIN(low_value+2*(B-1), high_value);
+    Bsize = MIN(B, (high_value-low_value)/2+1);
     for (j = 0; j < nprime; j++) {
       prime = newprimes[j]; 
       if (prime * prime > low_value)      
@@ -75,7 +75,7 @@ int main (int argc, char *argv[])
         if (!(low_value % prime)) first = 0;    
         else first = prime - (low_value*(prime +1)/2 % prime);
       }
-      for (i = first; i < Bhigh_value; i += prime) marked[i] = 1;    
+      for (i = first; i < Bsize; i += prime) marked[i] = 1;    
     }
   }
   count = 0; 
