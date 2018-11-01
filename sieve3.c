@@ -7,8 +7,8 @@
 
 int main (int argc, char *argv[])  
 {      
-  long long int n, low_value, high_value, size, proc0_size, i, first, prime;
-  int id, p, index, count, global_count, j, B; 
+  long long int n, low_value, high_value, Bhigh_value, size, proc0_size, i, first, prime;
+  int id, p, index, count, global_count, j, B, k; 
   char *marked, *pend;     
   double elapsed_time;     
   MPI_Init (&argc, &argv); 
@@ -23,7 +23,7 @@ int main (int argc, char *argv[])
   }   
   n = strtoll(argv[1], &pend, 10);  
   B = atoi(argv[2]);
-  low_value = 3 + 2*BLOCK_LOW(id,p,n/2-1);      
+  
   high_value = 3 + 2*BLOCK_HIGH(id,p,n/2-1);    
   size = BLOCK_SIZE(id,p,n/2-1);  
   proc0_size = (n/2-1)/p;  
@@ -64,17 +64,19 @@ int main (int argc, char *argv[])
   }   
   for (i = 0; i < size; i++) marked[i] = 0;  
   
-  for (j = 0; j < nprime; j++) {
-    prime = newprimes[j]; 
-    if (prime * prime > low_value)      
-    first = (prime * prime - low_value)/2;  
-    else {  
-      if (!(low_value % prime)) first = 0;    
-      else first = prime - (low_value*(prime +1)/2 % prime);
+  for (k=0;k<size;k+=B) {
+    low_value = 3 + 2*(BLOCK_LOW(id,p,n/2-1)+k);
+    Bhigh_value = MIN(low_value+2*(B-1), high_value);
+    for (j = 0; j < nprime; j++) {
+      prime = newprimes[j]; 
+      if (prime * prime > low_value)      
+      first = (prime * prime - low_value)/2;  
+      else {  
+        if (!(low_value % prime)) first = 0;    
+        else first = prime - (low_value*(prime +1)/2 % prime);
+      }
+      for (i = first; i < Bhigh_value; i += prime) marked[i] = 1;    
     }
-    for (i = first; i < size; i += prime) marked[i] = 1;   
-    first = (prime * prime - 3)/2;
-    for (i = first; i < psize; i += prime) primes[i] = 1;   
   }
   count = 0; 
   for (i = 0; i < size; i++)      
