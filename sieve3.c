@@ -1,12 +1,12 @@
-  #include <mpi.h>     
-  #include <math.h>    
-  #include <stdio.h>   
-  #include <stdlib.h>  
-  #include "MyMPI.h"   
-  #define MIN(a,b)  ((a)<(b)?(a):(b))
+#include <mpi.h>     
+#include <math.h>    
+#include <stdio.h>   
+#include <stdlib.h>  
+#include "MyMPI.h"   
+#define MIN(a,b)  ((a)<(b)?(a):(b))
 
-  int main (int argc, char *argv[])  
-  {      
+int main (int argc, char *argv[])  
+{      
   long long int n, low_value, high_value, size, proc0_size, i, first, prime;
   int id, p, index, count, global_count, j, B; 
   char *marked, *pend;     
@@ -15,6 +15,7 @@
   MPI_Barrier(MPI_COMM_WORLD);    
   elapsed_time = -MPI_Wtime();    
   MPI_Comm_rank (MPI_COMM_WORLD, &id);   
+  //printf("process %d starts\n", id);
   MPI_Comm_size (MPI_COMM_WORLD, &p);    
   if (argc != 3) {  
     if (!id) printf ("Command line: %s <m>\n", argv[0]);     
@@ -51,6 +52,7 @@
   for (i = 0; i < psize; i++) {
     if (!primes[i]) {
       newprimes[nprime++]=2*i + 3;
+      //if (!id && nprime<100) printf("%d\n", newprimes[nprime-1]);
    }
   }
 
@@ -61,17 +63,18 @@
     exit (1);      
   }   
   for (i = 0; i < size; i++) marked[i] = 0;  
+  
   for (j = 0; j < nprime; j++) {
-   prime = newprimes[j]; 
-   if (prime * prime > low_value)      
-   first = (prime * prime - low_value)/2;  
-   else {  
+    prime = newprimes[j]; 
+    if (prime * prime > low_value)      
+    first = (prime * prime - low_value)/2;  
+    else {  
       if (!(low_value % prime)) first = 0;    
       else first = prime - (low_value*(prime +1)/2 % prime);
-   }
-   for (i = first; i < size; i += prime) marked[i] = 1;   
-   first = (prime * prime - 3)/2;
-   for (i = first; i < psize; i += prime) primes[i] = 1;   
+    }
+    for (i = first; i < size; i += prime) marked[i] = 1;   
+    first = (prime * prime - 3)/2;
+    for (i = first; i < psize; i += prime) primes[i] = 1;   
   }
   count = 0; 
   for (i = 0; i < size; i++)      
@@ -86,4 +89,4 @@
   }   
   MPI_Finalize ();  
   return 0;  
-  }  
+}  
