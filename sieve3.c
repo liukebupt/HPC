@@ -82,7 +82,7 @@ int main (int argc, char *argv[])
       
       //if (k==0 && !id) printf("%d\n", prime);
       
-      for (i = first[i]+k; i < Bsize; i += prime) { marked[i] = 1;  
+      for (i = first[j]+k; i < Bsize; i += prime) { marked[i] = 1;  
        // printf("%d\n", Blow_value+i*2);
       } 
       //if (!id) printf("first %d prime %d Bsize %d\n", first*2+low_value, prime, Bsize); 
