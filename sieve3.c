@@ -7,8 +7,8 @@
 
 int main (int argc, char *argv[])  
 {      
-  long long int n, low_value, Blow_value, Bsize, size, proc0_size, i, first, prime, gsize;
-  int id, p, index, count, global_count, j, B, k, sqn, psize, *newprimes, nprime; 
+  long long int n, low_value, Blow_value, first, gsize;
+  int id, p, index, count, global_count, j, B, k, sqn, psize, *newprimes, nprime, prime, i, proc0_size, Bsize, size; 
   char *marked, *pend, *primes;     
   double elapsed_time;     
   MPI_Init (&argc, &argv); 
@@ -41,8 +41,7 @@ int main (int argc, char *argv[])
   index = 0;
   prime = 3; 
   do {
-    first = (prime * prime - 3)/2;
-    for (i = first; i < psize; i += prime) primes[i] = 1;     
+    for (i = (prime * prime - 3)/2; i < psize; i += prime) primes[i] = 1;     
     while (primes[++index]);  
     //printf("%d\n", prime);  
     prime = 2*index + 3;      
