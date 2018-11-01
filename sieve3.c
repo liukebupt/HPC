@@ -70,7 +70,6 @@ int main (int argc, char *argv[])
     //for (i = 0; i < Bsize; i ++) printf("%d\n", i*2+Blow_value);  
     for (j = 0; j < nprime; j++) {
       prime = newprimes[j]; 
-      if (prime*prime>Blow_value+2*B) break;
       //if (k==0 && !id) printf("%d\n", prime);
       if (prime * prime > Blow_value)      
       first = (prime * prime - low_value)/2;  
