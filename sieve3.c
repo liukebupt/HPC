@@ -8,7 +8,7 @@
 int main (int argc, char *argv[])  
 {      
   long long int n, low_value, Blow_value, *first, gsize;
-  int id, p, index, count, global_count, j, B, k, sqn, psize, *newprimes, nprime, prime, i, proc0_size, Bsize, size; 
+  int id, p, index, count, global_count, j, B, k, sqn, psize, *newprimes, nprime, prime, i, proc0_size, Bsize, size, *remainder; 
   char *marked, *pend, *primes;     
   double elapsed_time;     
   MPI_Init (&argc, &argv); 
@@ -64,6 +64,7 @@ int main (int argc, char *argv[])
   }   
   //if (id==7) printf("aaaa %d\n", high_value);
   first=(long long int *) malloc (nprime*sizeof(long long int)); 
+  remainder=(int *) malloc (nprime*sizeof(int)); 
   for (k=0;k<size;k+=B) {
     //Blow_value = low_value+2*k;
     //printf("%d  %d\n", k+B, size);
@@ -78,11 +79,13 @@ int main (int argc, char *argv[])
           if (!(low_value % prime)) first[j] = 0;    
           else first[j] = prime - (low_value*(prime +1)/2 % prime);
         }
+        remainder[j]=prime-B%prime;
       }
       
       //if (k==0 && !id) printf("%d\n", prime);
       
       for (i = first[j]+k; i < Bsize; i += prime) { marked[i] = 1;  
+      first[j]-=remainder[j];
        // printf("%d\n", Blow_value+i*2);
       } 
       //if (!id) printf("first %d prime %d Bsize %d\n", first*2+low_value, prime, Bsize); 
