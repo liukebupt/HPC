@@ -46,8 +46,8 @@
     //printf("%d\n", prime);                                                                 
     prime = 2*index + 3;                                                                                   
   } while ((long long int)prime * prime <= sqn);
-  int *newprimes = (int *) malloc (psize)*sizeof(int); 
-  nprime=0
+  int *newprimes = (int *) malloc (psize*sizeof(int)); 
+  int nprime=0;
   for (i = 0; i < psize; i++) {
     if (!primes[i]) {
       newprimes[nprime++]=2*i + 3;
