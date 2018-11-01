@@ -63,8 +63,6 @@ int main (int argc, char *argv[])
             else first = prime - (low_value*(prime +1)/2 % prime);                                   
          }                                                                                           
          for (i = first; i < size; i += prime) marked[i] = 1;   
-         first = (prime * prime - 3)/2;
-         for (i = first; i < psize; i += prime) primes[i] = 1;   
       }
    }
    count = 0;                                                                                     
